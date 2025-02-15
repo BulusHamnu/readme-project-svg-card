@@ -1,10 +1,74 @@
 import svgwrite
 import base64
 import textwrap
+import requests
+import json
+import os
+from dotenv import load_dotenv
+load_dotenv()
+TOKEN = os.environ.get("GITHUB_TOKEN")
+user_name = "BulusHamnu"
+api_endpoint = "https://api.github.com/users/" + f'{user_name}' + "/repos" #endpoint for all repos
+url = "https://api.github.com/graphql" #ql endpoint for getting pinned repos
+pinned = True #this flag is set true if i wanna query for pinned repos
 
-text = "Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo voluptatibus hic nemo rem nostrum error fuga, omnis eum? Libero soluta a ad aliquam voluptatem odit unde animi. Unde, autem vero? Lorem, ipsum dolor sit amet consectetur adipisicing elit. Illo voluptatibus hic nemo rem nostrum error fuga, omnis eum? Libero soluta a ad aliquam voluptatem odit unde animi. Unde, autem vero?"
+#github color code for lang
+colors_code = {
+    "Python": "#3572A5",
+    "JavaScript": "#F1E05A",
+    "TypeScript": "#3178C6",
+    "HTML": "#E34C26",
+    "CSS": "#563D7C",
+    "Java": "#B07219",
+    "Kotlin": "#A97BFF",
+    "C": "#555555",
+    "C++": "#F34B7D",
+    "C#": "#178600",
+    "Go": "#00ADD8",
+    "Rust": "#DEA584",
+    "Swift": "#F05138",
+    "PHP": "#4F5D95",
+    "Ruby": "#701516",
+    "Dart": "#00B4AB",
+    "Shell": "#89E051",
+    "Scala": "#DC322F",
+    "Objective-C": "#438EFF",
+    "Perl": "#0298C3",
+    "Lua": "#000080",
+    "Haskell": "#5E5086",
+    "Elixir": "#6E4A7E",
+    "Clojure": "#DB5855",
+    "R": "#198CE7",
+    "Matlab": "#E16737",
+    "Vim Script": "#199F4B",
+    "TeX": "#3D6117",
+    "GraphQL": "#E10098",
+    "Makefile": "#427819",
+    "Dockerfile": "#384D54"
+}
 
-def create_svg(file_name,desc,title,cover_img,color,lang,like_count) :
+query = """
+query ($login : String!){
+      user(login: $login) {
+        pinnedItems(first: 6, types: [REPOSITORY]) {
+          nodes {
+            ... on Repository {
+              name
+              url
+              description
+              stargazerCount
+              primaryLanguage {
+                name
+              }
+            }
+          }
+        }
+      }
+}
+""" #query schema
+headers = {"Authorization": f"Bearer {TOKEN}"}
+
+def create_svg(file_name,desc,title,cover_img,lang,like_count) :
     width = 320
     height = 240
 
@@ -30,16 +94,22 @@ def create_svg(file_name,desc,title,cover_img,color,lang,like_count) :
     paragraph = svg.text("", insert=(width / 2, 56), fill='rgb(230, 230, 230)', font_size="16px", text_anchor="middle")
 
     # to create multi-line and avoid overflow in svg so i broke the desc
-    wrapped_text = textwrap.wrap(desc, width=40)
-    for i in range(len(wrapped_text)):
-        if i < 6:
-            if i == 5:
-                wrapped_text[i] += "..."
-            line = svg.tspan(wrapped_text[i], x=[width / 2], dy=["1.2em"])
-            paragraph.add(line)
+    if desc :
+        wrapped_text = textwrap.wrap(desc, width=40)
+        for i in range(len(wrapped_text)):
+            if i < 6:
+                if i == 5:
+                    wrapped_text[i] += "..."
+                line = svg.tspan(wrapped_text[i], x=[ width / 2], dy=["1.2em"])
+                paragraph.add(line)
+                # width / 2
+    else :
+        desc = "No description for this project."
+        line = svg.tspan(desc, x=[width / 2], dy=["1.2em"])
+        paragraph.add(line)
 
     svg.add(paragraph)
-    svg.add(svg.circle(center=(40, 207), r=8, fill=color))
+    svg.add(svg.circle(center=(40, 207), r=8, fill=colors_code[lang]))
     svg.add(svg.text(lang, insert=(55, 211), fill='rgb(230, 230, 230)', font_size="15px"))
 
     #from web
@@ -56,10 +126,55 @@ def create_svg(file_name,desc,title,cover_img,color,lang,like_count) :
         (8 * 1.1 + 225, 8 * 1.1 + 196)
     ]
     svg.add(svg.polygon(points=star_points, fill="none", stroke="yellow", stroke_width=2))
+
+    #reduce and change to k format
+    if like_count >= 1000000:
+        m = like_count / 1000000
+        like_count = str(m).rstrip("0").rstrip(".") + "M"
+    elif like_count >= 1000:
+        k = like_count / 1000
+        like_count = str(k).rstrip("0").rstrip(".") + "K"
+
     svg.add(svg.text(like_count, insert=(250, 212), fill='rgb(230, 230, 230)', font_size="15px"))
 
     svg.save()
     print("done creating the file")
 
+def get_repos() :
+    r = None
+    if pinned :
+        r = requests.post(url, json={"query": query, "variables": {"login": f'{user_name}'}}, headers=headers)
+        print(f'response with {r.status_code}')
+        print("______________")
+        if r.status_code == 200 :
+            data1 = r.json()
+            data2 = data1["data"]["user"]["pinnedItems"]["nodes"]
+            for i in range(len(data2)):
+                name = data2[i].get("name")
+                desc = data2[i].get("description")
+                lang = data2[i].get("primaryLanguage")["name"]
+                likes_count = data2[i].get("stargazerCount")
+                repo_url = data2[i].get("url")
+                create_svg(f"project_card{i}.svg",desc,name,"image.png",lang,likes_count)
+        else :
+            print("could not get data..")
+    else :
+        r = requests.get(api_endpoint)
+        print(f'response with {r.status_code}')
+        print("______________")
+        if r.status_code == 200 :
+            data = r.json()
+            for i in range(len(data)):
+                name = data[i].get("name")
+                desc = data[i].get("description")
+                lang = data[i].get("language")
+                likes_count = data[i].get("stargazers_count")
+                repo_url = data[i].get("url")
 
-create_svg("project_card.svg",text,"Task Manager App Management system","image.png","red","javascipt","300k")
+                create_svg(f"project_card{i}.svg", desc, name, "image.png", lang, likes_count)
+        else :
+            print("could not get data..")
+
+get_repos()
+
+
