@@ -11,6 +11,19 @@ user_name = "DenverCoder1"
 api_endpoint = "https://api.github.com/users/" + f'{user_name}' + "/repos" #endpoint for all repos
 url = "https://api.github.com/graphql" #ql endpoint for getting pinned repos
 pinned = True #this flag is set true if i wanna query for pinned repos
+theme = "dark"
+themes_colors = {
+    "light" : {
+        "background" : "#e5e5e5",
+        "header" : "#17a2b8",
+        "text" : "#333333"
+    },
+    "dark" : {
+        "background" : "#282c34",
+        "header" : "#008080",
+        "text" : "#ffffff"
+    },
+}
 
 #github color code for lang
 colors_code = {
@@ -69,30 +82,33 @@ query ($login : String!){
 """ #query schema
 headers = {"Authorization": f"Bearer {TOKEN}"}
 
-def create_svg(file_name,desc,title,cover_img,lang,like_count) :
+
+#functions
+def create_svg(file_name,desc,title,cover_img,lang,like_count,themes) :
     width = 320
     height = 210
 
     # covert my image to based64 so it will be saved in the svg
-    with open(cover_img, "rb") as image:
-        image_file = image.read()
-        encode_file_data = base64.b64encode(image_file)
-        decoded_file_data = encode_file_data.decode('utf-8')
-    image_data = f'data:image/png;base64,{decoded_file_data}'  # format data
+    # with open(cover_img, "rb") as image:
+    #     image_file = image.read()
+    #     encode_file_data = base64.b64encode(image_file)
+    #     decoded_file_data = encode_file_data.decode('utf-8')
+    # image_data = f'data:image/png;base64,{decoded_file_data}'
+    # format data
 
     # create svg file
     svg = svgwrite.Drawing(file_name, size=(width, height), profile=("full"))
-    svg.add(svg.rect(insert=((width - width) / 2, 0), size=(width, height), rx=5, ry=5, fill=(svgwrite.rgb(40, 44, 52))))
+    svg.add(svg.rect(insert=((width - width) / 2, 0), size=(width, height), rx=5, ry=5, fill=(themes_colors[themes].get("background"))))
     # svg.add(svg.image(href=image_data, insert=((width - 250) / 2, 0), size=(250, 250))
-    svg.add(svg.rect(insert=((width - 280) / 2, 15), size=(280, 35), rx=5, ry=5, fill=(svgwrite.rgb(0, 150, 136))))
+    svg.add(svg.rect(insert=((width - 280) / 2, 15), size=(280, 35), rx=5, ry=5, fill=(themes_colors[themes].get("header"))))
 
     #if the title is too long
     if len(title) > 25 :
         title = title[0:25]
         title += ".."
 
-    svg.add(svg.text(title, insert=(width / 2, 38), fill='rgb(230, 230, 230)', font_size="20px",text_anchor="middle"))
-    paragraph = svg.text("", insert=(width / 2, 56), fill='rgb(230, 230, 230)', font_size="16px", text_anchor="middle")
+    svg.add(svg.text(title, insert=(width / 2, 38), fill=themes_colors[themes].get("text"), font_size="20px",text_anchor="middle"))
+    paragraph = svg.text("", insert=(width / 2, 56), fill=themes_colors[themes].get("text"), font_size="16px", text_anchor="middle")
 
     # to create multi-line and avoid overflow in svg so i broke the desc
     if desc :
@@ -111,8 +127,8 @@ def create_svg(file_name,desc,title,cover_img,lang,like_count) :
 
     svg.add(paragraph)
     lang = "None" if not lang else lang
-    svg.add(svg.circle(center=(40, 180), r=8, fill=colors_code[lang ])) #207 , 211
-    svg.add(svg.text(lang, insert=(55, 185), fill='rgb(230, 230, 230)', font_size="15px"))
+    svg.add(svg.circle(center=(40, 180), r=8, fill=colors_code[lang ]))
+    svg.add(svg.text(lang, insert=(55, 185), fill=themes_colors[themes].get("text"), font_size="15px"))
 
     #from web
     star_points = [
@@ -137,7 +153,7 @@ def create_svg(file_name,desc,title,cover_img,lang,like_count) :
         k = like_count / 1000
         like_count = str(k).rstrip("0").rstrip(".") + "K"
 
-    svg.add(svg.text(like_count, insert=(250, 184), fill='rgb(230, 230, 230)', font_size="15px")) #212
+    svg.add(svg.text(like_count, insert=(250, 184), fill=themes_colors[themes].get("text"), font_size="15px"))
 
     svg.save()
 
@@ -156,8 +172,9 @@ def get_repos() :
                 lang = data2[i].get("primaryLanguage")["name"]
                 likes_count = data2[i].get("stargazerCount")
                 repo_url = data2[i].get("url")
-                create_svg(f"project_card{i}.svg",desc,name,"image.png",lang,likes_count)
-                print("done creating the files")
+                create_svg(f"project_card{i}.svg",desc,name,"image.png",lang,likes_count,theme)
+
+            print("done creating the files")
         else :
             print("could not get data..")
     else :
@@ -173,11 +190,15 @@ def get_repos() :
                 likes_count = data[i].get("stargazers_count")
                 repo_url = data[i].get("url")
 
-                create_svg(f"project_card{i}.svg", desc, name, "image.png", lang, likes_count)
-                print("done creating the files")
+                create_svg(f"project_card{i}.svg", desc, name, "image.png", lang, likes_count,theme)
+
+            print("done creating the files")
         else :
             print("could not get data..")
 
-get_repos()
+
+if __name__ == "__main__" :
+    get_repos()
+
 
 
