@@ -1,7 +1,8 @@
 import svgwrite
+import asyncio
+import aiohttp
 import base64
 import textwrap
-import requests
 import json
 import os
 from dotenv import load_dotenv
@@ -157,48 +158,52 @@ def create_svg(file_name,desc,title,cover_img,lang,like_count,themes) :
 
     svg.save()
 
-def get_repos() :
+async def get_repos() :
     r = None
     if pinned :
-        r = requests.post(url, json={"query": query, "variables": {"login": f'{user_name}'}}, headers=headers)
-        print(f'response with {r.status_code}')
-        print("______________")
-        if r.status_code == 200 :
-            data1 = r.json()
-            data2 = data1["data"]["user"]["pinnedItems"]["nodes"]
-            for i in range(len(data2)):
-                name = data2[i].get("name")
-                desc = data2[i].get("description")
-                lang = data2[i].get("primaryLanguage")["name"]
-                likes_count = data2[i].get("stargazerCount")
-                repo_url = data2[i].get("url")
-                create_svg(f"project_card{i}.svg",desc,name,"image.png",lang,likes_count,theme)
+        async with aiohttp.ClientSession() as session:
+            r = await session.post(url,json={"query": query, "variables": {"login": f'{user_name}'}}, headers=headers)
 
-            print("done creating the files")
-        else :
-            print("could not get data..")
+            print(f'response with {r.status}')
+            print("______________")
+            if r.status == 200 :
+                data1 = await r.json()
+                data2 = data1["data"]["user"]["pinnedItems"]["nodes"]
+                for i in range(len(data2)):
+                    name = data2[i].get("name")
+                    desc = data2[i].get("description")
+                    lang = data2[i].get("primaryLanguage")["name"]
+                    likes_count = data2[i].get("stargazerCount")
+                    repo_url = data2[i].get("url")
+                    create_svg(f"{user_name}_project_card{i}.svg",desc,name,"image.png",lang,likes_count,theme)
+
+                print("done creating the files")
+            else :
+                print("could not get data..")
     else :
-        r = requests.get(api_endpoint)
-        print(f'response with {r.status_code}')
-        print("______________")
-        if r.status_code == 200 :
-            data = r.json()
-            for i in range(len(data)):
-                name = data[i].get("name")
-                desc = data[i].get("description")
-                lang = data[i].get("language")
-                likes_count = data[i].get("stargazers_count")
-                repo_url = data[i].get("url")
+        async with aiohttp.ClientSession() as session :
+            r = await session.get(api_endpoint)
 
-                create_svg(f"project_card{i}.svg", desc, name, "image.png", lang, likes_count,theme)
+            print(f'response with {r.status}')
+            print("______________")
+            if r.status == 200 :
+                data = await r.json()
+                for i in range(len(data)):
+                    name = data[i].get("name")
+                    desc = data[i].get("description")
+                    lang = data[i].get("language")
+                    likes_count = data[i].get("stargazers_count")
+                    repo_url = data[i].get("url")
 
-            print("done creating the files")
-        else :
-            print("could not get data..")
+                    create_svg(f"{user_name}_project_card{i}.svg", desc, name, "image.png", lang, likes_count,theme)
+
+                print("done creating the files")
+            else :
+                print("could not get data..")
 
 
 if __name__ == "__main__" :
-    get_repos()
+    asyncio.run(get_repos())
 
 
 
