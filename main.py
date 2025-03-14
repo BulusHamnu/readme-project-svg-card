@@ -8,11 +8,12 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.environ.get("GITHUB_TOKEN")
-user_name = "DenverCoder1"
-api_endpoint = "https://api.github.com/users/" + f'{user_name}' + "/repos" #endpoint for all repos
-url = "https://api.github.com/graphql" #ql endpoint for getting pinned repos
-pinned = True #this flag is set true if i wanna query for pinned repos
-theme = "dark"
+username = "BulusHamnu"
+user_repo_name = "Interative-responsive-Carousel-in-vanilla-js-html-and-css"
+pinned_repo = True #this flag is set true if i wanna query for pinned repos
+selected_theme = "light"
+
+# theme color for svg
 themes_colors = {
     "light" : {
         "background" : "#e5e5e5",
@@ -25,7 +26,6 @@ themes_colors = {
         "text" : "#ffffff"
     },
 }
-
 #github color code for lang
 colors_code = {
     "Python": "#3572A5",
@@ -158,31 +158,66 @@ def create_svg(file_name,desc,title,cover_img,lang,like_count,themes) :
 
     svg.save()
 
-async def get_repos() :
-    r = None
+async def get_repo(user_name, repo_name, theme) :
+    """
+    This function take a name arg and get the specific users repo
+    :return:
+    """
+    repo_url = "https://api.github.com/repos/" + username + "/" + user_repo_name
+    async with aiohttp.ClientSession() as session :
+        r = await session.get(repo_url)
+        if r.status == 200 :
+            data = await r.json()
+            # print(json.dumps(data, indent= 4))
+            name = data.get("name")
+            desc = data.get("description")
+            lang = data.get("language")
+            likes_count = data.get("stargazers_count")
+            repo_url = data.get("url")
+            create_svg(f"{user_name}_{repo_name}.svg", desc, name, "image.png", lang, likes_count, theme)
+            print("done creating the files")
+        else:
+            print("could not get data..")
+            data = await r.json()
+            print(json.dumps(data, indent=4))
+
+async def get_repos(user_name,pinned,theme) :
+    """
+    This function all the users repo but first check for user pinned arg if yes it get all the pinned repos else it get all users repo
+    :return:
+    """
+    endpoint = "https://api.github.com/users/" + f'{user_name}' + "/repos" #endpoint for all repos
+    graph_endpoint = "https://api.github.com/graphql" #ql endpoint for getting pinned repos
+
     if pinned :
         async with aiohttp.ClientSession() as session:
-            r = await session.post(url,json={"query": query, "variables": {"login": f'{user_name}'}}, headers=headers)
+            r = await session.post(graph_endpoint,json={"query": query, "variables": {"login": f'{user_name}'}}, headers=headers)
 
             print(f'response with {r.status}')
             print("______________")
             if r.status == 200 :
                 data1 = await r.json()
-                data2 = data1["data"]["user"]["pinnedItems"]["nodes"]
-                for i in range(len(data2)):
-                    name = data2[i].get("name")
-                    desc = data2[i].get("description")
-                    lang = data2[i].get("primaryLanguage")["name"]
-                    likes_count = data2[i].get("stargazerCount")
-                    repo_url = data2[i].get("url")
-                    create_svg(f"{user_name}_project_card{i}.svg",desc,name,"image.png",lang,likes_count,theme)
+                error = data1.get("errors")
+                if not error :
+                    data2 = data1["data"]["user"]["pinnedItems"]["nodes"]
+                    for i in range(len(data2)):
+                        name = data2[i].get("name")
+                        desc = data2[i].get("description")
+                        lang = data2[i].get("primaryLanguage")["name"]
+                        likes_count = data2[i].get("stargazerCount")
+                        repo_url = data2[i].get("url")
+                        create_svg(f"{user_name}_project_card{i}.svg",desc,name,"image.png",lang,likes_count,theme)
 
-                print("done creating the files")
+                    print("done creating the files")
+                else :
+                    rep = { "status" : error[0].get("type"), "message" : error[0].get("message")}
+                    print(json.dumps(rep, indent=4))
             else :
-                print("could not get data..")
+                error = await r.json()
+                print(error)
     else :
         async with aiohttp.ClientSession() as session :
-            r = await session.get(api_endpoint)
+            r = await session.get(endpoint)
 
             print(f'response with {r.status}')
             print("______________")
@@ -199,11 +234,11 @@ async def get_repos() :
 
                 print("done creating the files")
             else :
-                print("could not get data..")
+                error = await r.json()
+                print(error)
 
 
 if __name__ == "__main__" :
-    asyncio.run(get_repos())
-
-
+    asyncio.run(get_repo(username, user_repo_name, selected_theme))
+    # asyncio.run(get_repos(username,pinned_repo,selected_theme))
 
