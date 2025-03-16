@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.environ.get("GITHUB_TOKEN")
 username = "BulusHamnu"
-user_repo_name = "Interative-responsive-Carousel-in-vanilla-js-html-and-css"
+user_repo_name = "Demi-Tasks"
 pinned_repo = True #this flag is set true if i wanna query for pinned repos
-selected_theme = "light"
+selected_theme = "dark"
 
 # theme color for svg
 themes_colors = {
@@ -82,34 +82,51 @@ query ($login : String!){
 }
 """ #query schema
 headers = {"Authorization": f"Bearer {TOKEN}"}
+imglink =  "https://bulusdev.vercel.app/Asserts/images/animequiz.png"
+# imglink = "None"
 
 
 #functions
-def create_svg(file_name,desc,title,cover_img,lang,like_count,themes) :
+def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
     width = 320
-    height = 210
+    height = 430
 
-    # covert my image to based64 so it will be saved in the svg
-    # with open(cover_img, "rb") as image:
-    #     image_file = image.read()
-    #     encode_file_data = base64.b64encode(image_file)
-    #     decoded_file_data = encode_file_data.decode('utf-8')
-    # image_data = f'data:image/png;base64,{decoded_file_data}'
-    # format data
+    head_rect_y = 225
+    head_text_Y = 249
+    desc_text_y = 265
+    lang_sym_y = 390
+    lang_text_y = 395
+    star_y_coordinates = [ 386.4, 390.8, 390.8, 394.1, 398.5,396.3, 398.5, 394.1, 390.8, 390.8]
+    star_count_y = 398.5
+
+    if img == "None" :
+        height = 210
+        lang_text_y = 185
+        head_rect_y = 15
+        head_text_Y = 38
+        desc_text_y = 56
+        lang_sym_y = 180
+        star_y_coordinates = [4 * 1.1 + 168, 8 * 1.1 + 168,8 * 1.1 + 168,11 * 1.1 + 168,15 * 1.1 + 168,13 * 1.1 + 168,15 * 1.1 + 168,11 * 1.1 + 168,8 * 1.1 + 168, 8 * 1.1 + 168 ]
+        star_count_y = 184
+
 
     # create svg file
     svg = svgwrite.Drawing(file_name, size=(width, height), profile=("full"))
     svg.add(svg.rect(insert=((width - width) / 2, 0), size=(width, height), rx=5, ry=5, fill=(themes_colors[themes].get("background"))))
-    # svg.add(svg.image(href=image_data, insert=((width - 250) / 2, 0), size=(250, 250))
-    svg.add(svg.rect(insert=((width - 280) / 2, 15), size=(280, 35), rx=5, ry=5, fill=(themes_colors[themes].get("header"))))
+
+    #chek for thge image parameter
+    if img_link != "None" :
+        svg.add(svg.image(href=img_link, insert=(34.5, -7), size=(250, 250)))
+
+    svg.add(svg.rect(insert=((width - 280) / 2, head_rect_y), size=(280, 35), rx=5, ry=5, fill=(themes_colors[themes].get("header"))))
 
     #if the title is too long
     if len(title) > 25 :
         title = title[0:25]
         title += ".."
 
-    svg.add(svg.text(title, insert=(width / 2, 38), fill=themes_colors[themes].get("text"), font_size="20px",text_anchor="middle"))
-    paragraph = svg.text("", insert=(width / 2, 56), fill=themes_colors[themes].get("text"), font_size="16px", text_anchor="middle")
+    svg.add(svg.text(title, insert=(width / 2, head_text_Y), fill=themes_colors[themes].get("text"), font_size="20px",text_anchor="middle"))
+    paragraph = svg.text("", insert=(width / 2, desc_text_y), fill=themes_colors[themes].get("text"), font_size="16px", text_anchor="middle")
 
     # to create multi-line and avoid overflow in svg so i broke the desc
     if desc :
@@ -128,21 +145,21 @@ def create_svg(file_name,desc,title,cover_img,lang,like_count,themes) :
 
     svg.add(paragraph)
     lang = "None" if not lang else lang
-    svg.add(svg.circle(center=(40, 180), r=8, fill=colors_code[lang ]))
-    svg.add(svg.text(lang, insert=(55, 185), fill=themes_colors[themes].get("text"), font_size="15px"))
+    svg.add(svg.circle(center=(40, lang_sym_y), r=8, fill=colors_code[lang ]))
+    svg.add(svg.text(lang, insert=(55, lang_text_y), fill=themes_colors[themes].get("text"), font_size="15px"))
 
     #from web
     star_points = [
-        (10 * 1.1 + 225, 4 * 1.1 + 168),  # Top
-        (12 * 1.1 + 225, 8 * 1.1 + 168),
-        (16 * 1.1 + 225, 8 * 1.1 + 168),
-        (13 * 1.1 + 225, 11 * 1.1 + 168),
-        (14 * 1.1 + 225, 15 * 1.1 + 168),
-        (10 * 1.1 + 225, 13 * 1.1 + 168),
-        (6 * 1.1 + 225, 15 * 1.1 + 168),
-        (7 * 1.1 + 225, 11 * 1.1 + 168),
-        (4 * 1.1 + 225, 8 * 1.1 + 168),
-        (8 * 1.1 + 225, 8 * 1.1 + 168)
+        (10 * 1.1 + 225, star_y_coordinates[0]),  # Top
+        (12 * 1.1 + 225, star_y_coordinates[1]),
+        (16 * 1.1 + 225, star_y_coordinates[2]),
+        (13 * 1.1 + 225, star_y_coordinates[3]),
+        (14 * 1.1 + 225, star_y_coordinates[4]),
+        (10 * 1.1 + 225, star_y_coordinates[5]),
+        (6 * 1.1 + 225, star_y_coordinates[6]),
+        (7 * 1.1 + 225, star_y_coordinates[7]),
+        (4 * 1.1 + 225, star_y_coordinates[8]),
+        (8 * 1.1 + 225, star_y_coordinates[9])
     ]
     svg.add(svg.polygon(points=star_points, fill="none", stroke="yellow", stroke_width=2))
 
@@ -154,11 +171,11 @@ def create_svg(file_name,desc,title,cover_img,lang,like_count,themes) :
         k = like_count / 1000
         like_count = str(k).rstrip("0").rstrip(".") + "K"
 
-    svg.add(svg.text(like_count, insert=(250, 184), fill=themes_colors[themes].get("text"), font_size="15px"))
+    svg.add(svg.text(like_count, insert=(250, star_count_y), fill=themes_colors[themes].get("text"), font_size="15px"))
 
     svg.save()
 
-async def get_repo(user_name, repo_name, theme) :
+async def get_repo(user_name, repo_name, theme, img_link) :
     """
     This function take a name arg and get the specific users repo
     :return:
@@ -174,14 +191,14 @@ async def get_repo(user_name, repo_name, theme) :
             lang = data.get("language")
             likes_count = data.get("stargazers_count")
             repo_url = data.get("url")
-            create_svg(f"{user_name}_{repo_name}.svg", desc, name, "image.png", lang, likes_count, theme)
+            create_svg(f"{user_name}_{repo_name}.svg", desc, name, img_link, lang, likes_count, theme)
             print("done creating the files")
         else:
             print("could not get data..")
             data = await r.json()
             print(json.dumps(data, indent=4))
 
-async def get_repos(user_name,pinned,theme) :
+async def get_repos(user_name,pinned,theme, img_link) :
     """
     This function all the users repo but first check for user pinned arg if yes it get all the pinned repos else it get all users repo
     :return:
@@ -206,7 +223,7 @@ async def get_repos(user_name,pinned,theme) :
                         lang = data2[i].get("primaryLanguage")["name"]
                         likes_count = data2[i].get("stargazerCount")
                         repo_url = data2[i].get("url")
-                        create_svg(f"{user_name}_project_card{i}.svg",desc,name,"image.png",lang,likes_count,theme)
+                        create_svg(f"{user_name}_project_card{i}.svg",desc,name,img_link,lang,likes_count,theme)
 
                     print("done creating the files")
                 else :
@@ -230,7 +247,7 @@ async def get_repos(user_name,pinned,theme) :
                     likes_count = data[i].get("stargazers_count")
                     repo_url = data[i].get("url")
 
-                    create_svg(f"{user_name}_project_card{i}.svg", desc, name, "image.png", lang, likes_count,theme)
+                    create_svg(f"{user_name}_project_card{i}.svg", desc, name, img_link, lang, likes_count,theme)
 
                 print("done creating the files")
             else :
@@ -239,6 +256,6 @@ async def get_repos(user_name,pinned,theme) :
 
 
 if __name__ == "__main__" :
-    asyncio.run(get_repo(username, user_repo_name, selected_theme))
-    # asyncio.run(get_repos(username,pinned_repo,selected_theme))
+    # asyncio.run(get_repo(username, user_repo_name, selected_theme,img_link))
+    asyncio.run(get_repos(username,pinned_repo,selected_theme, img_link))
 
