@@ -1,14 +1,9 @@
-from marshmallow import Schema, fields
+from marshmallow import Schema, fields, validate
+from functions import themes_colors
 
 #mershmellow
 class ReposValidator(Schema) :
-    imageurl = fields.Url(required = False, metadata= { 
-        "error_message" : {
-            "invalid" : "Must be a valid URL."
-        }
-        })
-
-    theme = fields.Str(required = True , metadata = {
+    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid color", metadata = {
         "error_message" : {
             "required" : "Missing theme specification"
         }
@@ -28,7 +23,7 @@ class RepoValidator(Schema) :
         }
         })
 
-    theme = fields.Str(required = True, metadata = {
+    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid color", metadata = {
         "error_message" : {
             "required" : "Missing theme specification"
         }

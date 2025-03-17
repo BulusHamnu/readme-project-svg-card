@@ -2,11 +2,12 @@ from flask_restful import Resource, abort
 from flask import request
 from validator import  ReposValidator, RepoValidator
 from marshmallow import ValidationError
+import asyncio
+from functions import get_repos, get_repo, themes_colors
 
 repos_validator = ReposValidator()
 repo_validator = RepoValidator()
 
-#http://127.0.0.1:5000/api/BulusHamnu/repos?pinned=True&theme=dark&imageurl=hehe
 class Repos(Resource) :
     def get(self,username) :
         if len(username) <= 3 :
@@ -17,18 +18,16 @@ class Repos(Resource) :
             args = repos_validator.load(request.args)
 
             pinned_repo = eval(args.get("pinned"))
-            theme = args.get("theme")
-            imageurl = args.get("imageurl") if args.get("imageurl") else None
-            print(pinned_repo,theme,imageurl)
+            theme = args.get("theme") 
+
+            svg_results = asyncio.run(get_repos(username,pinned_repo,theme, None))
+            return svg_results[0] , svg_results[1]
 
         except ValidationError as error:
             abort(400, message = error.messages )
 
 
-        return f"This are your repos! {username}", 200
 
-
-#http://127.0.0.1:5000/api/bulushamnu/repos/svg-card?theme=dark&imageurl=hehe
 class Singlerepo(Resource) :
     def get(self,username,name) :
         if len(username) <= 3 :
@@ -39,9 +38,11 @@ class Singlerepo(Resource) :
 
             theme = args.get("theme")
             imageurl = args.get("imageurl") if args.get("imageurl") else None
-            print(name,theme,imageurl)
+
+            svg_json = asyncio.run(get_repo(username, name, theme, imageurl))
+            return svg_json[0] , svg_json[1]
 
         except ValidationError as error:
             abort(400, message = error.messages )
 
-        return f"This is your repo! {username}: {name}", 200
+        

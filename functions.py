@@ -8,10 +8,13 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.environ.get("GITHUB_TOKEN")
+
+# variable for testing functions and return
 username = "BulusHamnu"
 user_repo_name = "Demi-Tasks"
 pinned_repo = True #this flag is set true if i wanna query for pinned repos
 selected_theme = "dark"
+imglink =  "https://bulusdev.vercel.app/Asserts/images/animequiz.png"
 
 # theme color for svg
 themes_colors = {
@@ -62,6 +65,7 @@ colors_code = {
     "None": "#384D54"
 }
 
+#query schema
 query = """
 query ($login : String!){
       user(login: $login) {
@@ -80,10 +84,8 @@ query ($login : String!){
         }
       }
 }
-""" #query schema
+""" 
 headers = {"Authorization": f"Bearer {TOKEN}"}
-imglink =  "https://bulusdev.vercel.app/Asserts/images/animequiz.png"
-# imglink = "None"
 
 
 #functions
@@ -99,7 +101,7 @@ def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
     star_y_coordinates = [ 386.4, 390.8, 390.8, 394.1, 398.5,396.3, 398.5, 394.1, 390.8, 390.8]
     star_count_y = 398.5
 
-    if img == "None" :
+    if img_link == None :
         height = 210
         lang_text_y = 185
         head_rect_y = 15
@@ -115,7 +117,7 @@ def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
     svg.add(svg.rect(insert=((width - width) / 2, 0), size=(width, height), rx=5, ry=5, fill=(themes_colors[themes].get("background"))))
 
     #chek for thge image parameter
-    if img_link != "None" :
+    if img_link != None :
         svg.add(svg.image(href=img_link, insert=(34.5, -7), size=(250, 250)))
 
     svg.add(svg.rect(insert=((width - 280) / 2, head_rect_y), size=(280, 35), rx=5, ry=5, fill=(themes_colors[themes].get("header"))))
@@ -173,35 +175,36 @@ def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
 
     svg.add(svg.text(like_count, insert=(250, star_count_y), fill=themes_colors[themes].get("text"), font_size="15px"))
 
-    svg.save()
+    # svg.save()
+    return svg.tostring()
 
 async def get_repo(user_name, repo_name, theme, img_link) :
     """
     This function take a name arg and get the specific users repo
-    :return:
+    :return: api response from git
     """
-    repo_url = "https://api.github.com/repos/" + username + "/" + user_repo_name
+    repo_url = "https://api.github.com/repos/" + user_name + "/" + repo_name
     async with aiohttp.ClientSession() as session :
         r = await session.get(repo_url)
         if r.status == 200 :
             data = await r.json()
-            # print(json.dumps(data, indent= 4))
             name = data.get("name")
             desc = data.get("description")
             lang = data.get("language")
             likes_count = data.get("stargazers_count")
             repo_url = data.get("url")
-            create_svg(f"{user_name}_{repo_name}.svg", desc, name, img_link, lang, likes_count, theme)
-            print("done creating the files")
+            svg_data = create_svg(f"{user_name}_{repo_name}.svg", desc, name, img_link, lang, likes_count, theme)
+
+            
+            return [svg_data , r.status]
         else:
-            print("could not get data..")
             data = await r.json()
-            print(json.dumps(data, indent=4))
+            return [{"error" : data} , r.status ]
 
 async def get_repos(user_name,pinned,theme, img_link) :
     """
     This function all the users repo but first check for user pinned arg if yes it get all the pinned repos else it get all users repo
-    :return:
+    :return: api reponse from git
     """
     endpoint = "https://api.github.com/users/" + f'{user_name}' + "/repos" #endpoint for all repos
     graph_endpoint = "https://api.github.com/graphql" #ql endpoint for getting pinned repos
@@ -217,29 +220,34 @@ async def get_repos(user_name,pinned,theme, img_link) :
                 error = data1.get("errors")
                 if not error :
                     data2 = data1["data"]["user"]["pinnedItems"]["nodes"]
+
+                    svg_list = []
                     for i in range(len(data2)):
                         name = data2[i].get("name")
                         desc = data2[i].get("description")
                         lang = data2[i].get("primaryLanguage")["name"]
                         likes_count = data2[i].get("stargazerCount")
                         repo_url = data2[i].get("url")
-                        create_svg(f"{user_name}_project_card{i}.svg",desc,name,img_link,lang,likes_count,theme)
+                        svg_data = create_svg(f"{user_name}_project_card{i}.svg",desc,name,img_link,lang,likes_count,theme)
+                        
+                        svg_list.append(svg_data)
 
-                    print("done creating the files")
+                    return [{ "data" : svg_list }, r.status]
                 else :
                     rep = { "status" : error[0].get("type"), "message" : error[0].get("message")}
-                    print(json.dumps(rep, indent=4))
+                    return [{ "error" : rep } , r.status ]
             else :
                 error = await r.json()
-                print(error)
+                return [{ "error" : error } , r.status ]
     else :
         async with aiohttp.ClientSession() as session :
             r = await session.get(endpoint)
 
-            print(f'response with {r.status}')
             print("______________")
             if r.status == 200 :
                 data = await r.json()
+
+                svg_list = []
                 for i in range(len(data)):
                     name = data[i].get("name")
                     desc = data[i].get("description")
@@ -247,15 +255,15 @@ async def get_repos(user_name,pinned,theme, img_link) :
                     likes_count = data[i].get("stargazers_count")
                     repo_url = data[i].get("url")
 
-                    create_svg(f"{user_name}_project_card{i}.svg", desc, name, img_link, lang, likes_count,theme)
+                    svg_data = create_svg(f"{user_name}_project_card{i}.svg", desc, name, img_link, lang, likes_count,theme)
 
-                print("done creating the files")
+                    svg_list.append(svg_data)
+                return [{ "data" : svg_list} , r.status ]
             else :
                 error = await r.json()
-                print(error)
+                return [{ "error" : error } , r.status ]
 
 
 if __name__ == "__main__" :
-    # asyncio.run(get_repo(username, user_repo_name, selected_theme,img_link))
-    asyncio.run(get_repos(username,pinned_repo,selected_theme, img_link))
-
+    svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
+    # svgs = asyncio.run(get_repos(username,pinned_repo,selected_theme, imglink))
