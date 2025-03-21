@@ -5,6 +5,7 @@ import base64
 import textwrap
 import json
 import os
+import requests
 from dotenv import load_dotenv
 load_dotenv()
 TOKEN = os.environ.get("GITHUB_TOKEN")
@@ -116,9 +117,16 @@ def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
     svg = svgwrite.Drawing(file_name, size=(width, height), profile=("full"))
     svg.add(svg.rect(insert=((width - width) / 2, 0), size=(width, height), rx=5, ry=5, fill=(themes_colors[themes].get("background"))))
 
-    #chek for thge image parameter
+    #chek for the image parameter
     if img_link != None :
-        svg.add(svg.image(href=img_link, insert=(34.5, -7), size=(250, 250)))
+        # getting image from url
+        img_file = requests.get(img_link)
+        encode_file_data = base64.b64encode(img_file.content)
+        decoded_file_data = encode_file_data.decode('utf-8')
+        image_data = f'data:image/png/jpeg;base64,{decoded_file_data}'
+
+
+        svg.add(svg.image(href=image_data, insert=(34.5, -7), size=(250, 250)))
 
     svg.add(svg.rect(insert=((width - 280) / 2, head_rect_y), size=(280, 35), rx=5, ry=5, fill=(themes_colors[themes].get("header"))))
 

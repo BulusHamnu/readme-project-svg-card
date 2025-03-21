@@ -1,5 +1,5 @@
 from flask_restful import Resource, abort
-from flask import request
+from flask import request, Response
 from validator import  ReposValidator, RepoValidator
 from marshmallow import ValidationError
 import asyncio
@@ -38,9 +38,9 @@ class Singlerepo(Resource) :
 
             theme = args.get("theme")
             imageurl = args.get("imageurl") if args.get("imageurl") else None
+            svg_content = asyncio.run(get_repo(username, name, theme, imageurl))
 
-            svg_json = asyncio.run(get_repo(username, name, theme, imageurl))
-            return svg_json[0] , svg_json[1]
+            return Response(svg_content[0], content_type="image/svg+xml", status = svg_content[1])
 
         except ValidationError as error:
             abort(400, message = error.messages )
