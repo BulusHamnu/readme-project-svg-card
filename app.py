@@ -1,5 +1,5 @@
 #flask app 
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, url_for
 from flask_restful import Api, abort, reqparse
 from resource import Singlerepo, Repos
 from flask_cors import CORS
@@ -13,7 +13,7 @@ CORS(app)
 @app.route("/")
 @app.route("/home")
 def home() :
-    return render_template("gg.html")
+    return render_template("index.html")
 
 @app.route("/api/repos")
 def missing_username() :
