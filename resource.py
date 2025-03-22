@@ -1,12 +1,13 @@
 from flask_restful import Resource, abort
 from flask import request, Response
-from validator import  ReposValidator, RepoValidator
+from validator import  ReposValidator, RepoValidator, ReposJsonValidator
 from marshmallow import ValidationError
 import asyncio
-from functions import get_repos, get_repo, themes_colors
+from functions import get_repos, get_repo, themes_colors, get_selected_repos
 
 repos_validator = ReposValidator()
 repo_validator = RepoValidator()
+repos_json_validator = ReposJsonValidator()
 
 class Repos(Resource) :
     def get(self,username) :
@@ -26,6 +27,19 @@ class Repos(Resource) :
         except ValidationError as error:
             abort(400, message = error.messages )
 
+    def post(self,username) :
+        if len(username) <= 3 :
+            abort(400, message = "please provide a valid username!")
+
+        try :
+            json_data = repos_json_validator.load(request.json)
+            repos = json_data.get("repos")
+
+            svg_list = asyncio.run(get_selected_repos(username,repos))
+            
+            return svg_list[0] , svg_list[1]
+        except ValidationError as error :
+            abort(400, message = error.messages )
 
 
 class Singlerepo(Resource) :

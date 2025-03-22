@@ -272,6 +272,43 @@ async def get_repos(user_name,pinned,theme, img_link) :
                 return [{ "error" : error } , r.status ]
 
 
+async def get_selected_repos(user_name,repos) :
+    endpoint = "https://api.github.com/users/" + f'{user_name}' + "/repos" #endpoint for all
+
+    async with aiohttp.ClientSession() as session :
+        r = await session.get(endpoint)
+
+        print("______________")
+        if r.status == 200 :
+            data = await r.json()
+
+            svg_list = []
+            for i in range(len(data)):
+                name = data[i].get("name")
+                desc = data[i].get("description")
+                lang = data[i].get("language")
+                likes_count = data[i].get("stargazers_count")
+                repo_url = data[i].get("url")
+
+
+                for repo in repos :
+                    if  repo.get("name") == name :
+                        svg_data = create_svg(f"{user_name}_project_card{i}.svg", desc, name, 
+                            repo.get("imageurl") if repo.get("imageurl") != "None" else None 
+                            , lang, likes_count,repo.get("theme"))
+                        svg_list.append(svg_data)
+
+            if not svg_list :
+                return [{ "error" : f"No Repos with this names are found. {[repo.get("name") for repo in repos]}"} , r.status ]
+
+            return [{ "data" : svg_list} , r.status ]
+        else :
+            error = await r.json()
+            return [{ "error" : error } , r.status ]
+
+
 if __name__ == "__main__" :
-    svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
+    # svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
     # svgs = asyncio.run(get_repos(username,pinned_repo,selected_theme, imglink))
+    svgs = asyncio.run(get_selected_repos(username,[]))
+    print(json.dumps(svgs, indent=4))
