@@ -99,6 +99,7 @@ query ($login : String!){
 headers = {"Authorization": f"Bearer {TOKEN}"}
 
 
+
 #functions
 def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
     width = 320
@@ -203,7 +204,7 @@ async def get_repo(user_name, repo_name, theme, img_link) :
     """
     repo_url = "https://api.github.com/repos/" + user_name + "/" + repo_name
     async with aiohttp.ClientSession() as session :
-        r = await session.get(repo_url)
+        r = await session.get(repo_url, headers = headers)
         if r.status == 200 :
             data = await r.json()
             name = data.get("name")
@@ -218,6 +219,7 @@ async def get_repo(user_name, repo_name, theme, img_link) :
         else:
             data = await r.json()
             return [{"error" : data} , r.status ]
+            
 
 async def get_repos(user_name,pinned,theme, img_link) :
     """
@@ -259,7 +261,7 @@ async def get_repos(user_name,pinned,theme, img_link) :
                 return [{ "error" : error } , r.status ]
     else :
         async with aiohttp.ClientSession() as session :
-            r = await session.get(endpoint)
+            r = await session.get(endpoint, headers = headers)
 
             print("______________")
             if r.status == 200 :
@@ -286,7 +288,7 @@ async def get_selected_repos(user_name,repos) :
     endpoint = "https://api.github.com/users/" + f'{user_name}' + "/repos" #endpoint for all
 
     async with aiohttp.ClientSession() as session :
-        r = await session.get(endpoint)
+        r = await session.get(endpoint, headers = headers)
 
         print("______________")
         if r.status == 200 :
@@ -318,7 +320,7 @@ async def get_selected_repos(user_name,repos) :
 
 
 if __name__ == "__main__" :
-    # svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
+    svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
     # svgs = asyncio.run(get_repos(username,pinned_repo,selected_theme, imglink))
-    svgs = asyncio.run(get_selected_repos(username,[]))
-    print(json.dumps(svgs, indent=4))
+    # svgs = asyncio.run(get_selected_repos(username,[]))
+    # print(json.dumps(svgs, indent=4))
