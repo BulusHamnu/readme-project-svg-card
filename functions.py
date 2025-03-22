@@ -29,6 +29,16 @@ themes_colors = {
         "header" : "#008080",
         "text" : "#ffffff"
     },
+    "warm": {
+        "background": "#f4e1d2",
+        "header": "#d2691e",
+        "text": "#5a3e2b"
+    },
+    "cool": {
+        "background": "#d7f0f7",
+        "header": "#239dad",
+        "text": "#082f49"
+    }
 }
 #github color code for lang
 colors_code = {
