@@ -3,50 +3,26 @@ from functions import themes_colors
 
 #mershmellow
 class ReposValidator(Schema) :
-    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid color", metadata = {
-        "error_message" : {
-            "required" : "Missing theme specification"
-        }
-        })
+    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid color" )
 
-    pinned = fields.Str(required = True, metadata = {
-        "error_message" : {
-            "required" : "Please specify False if you want all user's repos, True if you want user's pinned repos."
-        }
-        })
+    pinned = fields.Str(required = True)
 
 
 class RepoValidator(Schema) :
-    imageurl = fields.Url(required = False, metadata= { 
-        "error_message" : {
-            "invalid" : "Must be a valid URL."
-        }
-        })
+    imageurl = fields.Url(required = False)
 
-    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid theme", metadata = {
-        "error_message" : {
-            "required" : "Missing theme specification"
-        }
-        })
+    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid theme" )
 
 # check and validate indivitual repo for ReposJsonValidator
 class RepoShema(Schema) :
     name = fields.Str(required=True)
     theme = fields.Str(required=True, validate = validate.OneOf( choices= list(themes_colors.keys())), error="Invalid color")
-    imageurl = fields.Url(required=False, metadata= { 
-        "error_message" : {
-            "invalid" : "Must be a valid URL."
-        }
-        })
+    imageurl = fields.Url(required=False )
 
 
 class ReposJsonValidator(Schema) :
 
-    repos = fields.List(fields.Nested(RepoShema), required = True, error= "Empty list", metadata = {
-        "error_message" : {
-            "required" : "Missing names of repos to get."
-        }
-        } )
+    repos = fields.List(fields.Nested(RepoShema), required = True, error= "Empty list")
 
             
     
