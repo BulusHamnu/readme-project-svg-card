@@ -13,7 +13,7 @@ CORS(app)
 @app.route("/")
 @app.route("/home")
 def home() :
-    return render_template("index.html")
+    return render_template("index.html", title = "Home page | Svg project card")
 
 @app.route("/api/repos")
 def missing_username() :
@@ -26,7 +26,7 @@ api.add_resource(Singlerepo, "/api/<username>/repos/<name>" )
 
 @app.errorhandler(404)
 def error_404(error) :
-    return "<h1>This endpoint does'nt exist</h1>"
+    return render_template("error-page.html", title = "Error Page | Svg project card")
 
 
 if __name__ == "__main__" :
