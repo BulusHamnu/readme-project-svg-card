@@ -1,0 +1,51 @@
+.menu-link {
+    padding-top: 6rem;
+}
+h1 {
+    text-align: center;
+}
+p,h4 {
+    margin-bottom: 1rem;
+}
+ul:not(.nav-links){
+    list-style-type: circle;
+    text-align: left;
+    max-width: 52rem;
+    margin-bottom: 3rem;
+}
+.menu-link ul{
+    list-style-type: none ;
+}
+ ul li {
+    margin-bottom: .8rem;
+}
+
+.getting-all-repos, .getting-a-single-repo , .github-example {
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+.menu-link p {
+    margin-bottom: .5rem;
+}
+.menu-link ul li a {
+    display: block;
+    padding: .5rem 1rem;
+    margin-bottom: .5rem;
+    text-decoration: underline;
+}
+.menu-link ul li a:hover {
+    background-color: #e0e7ff;
+}
+.code-block {
+    margin-bottom: 3rem;
+}
+
+mark {
+    padding: .2rem;
+}
+
+.back-to-top {
+    color: darkblue;
+    text-decoration: underline;
+    font-size: 17px;
+}

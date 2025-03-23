@@ -15,6 +15,12 @@ CORS(app)
 def home() :
     return render_template("index.html", title = "Home page | Svg project card")
 
+
+@app.route("/docs")
+def docs() :
+    return render_template("docs.html", title = "Docs | Svg projects card")
+
+
 @app.route("/api/repos")
 def missing_username() :
     return jsonify({ "message" : "missing username value, please use: /api/<username>/repos" }), 400

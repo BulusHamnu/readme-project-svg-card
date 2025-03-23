@@ -9,6 +9,10 @@
   <meta name="author" content="svg-projects-card" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism.css">
+  {% block style %}
+  {% endblock %}
+  
 </head>
 <body>
   <header class="header">
@@ -18,10 +22,10 @@
       </div>
       <nav>
         <ul class="nav-links">
-          {% if title != "Error Page | Svg project card" %}
+          {% if title == "Home page | Svg project card" %}
             <li><a href="#examples">Examples</a></li>
           {% endif %}
-          <li><a href="#">Docs</a></li>
+          <li><a href="{{ url_for('docs') }}">Docs</a></li>
         </ul>
       </nav>
     </div>
@@ -31,7 +35,7 @@
   {% block content %}
   {% endblock %}
   
-  {% if title != "Error Page | Svg project card" %}
+  {% if title == "Home page | Svg project card" %}
     <footer class="footer">
       <div class="container">
         <div class="footer-content">
@@ -53,5 +57,8 @@
 
   {% block script %}
   {% endblock %}
+  <!-- Prism.js for syntax highlighting -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
 </body>
 </html>

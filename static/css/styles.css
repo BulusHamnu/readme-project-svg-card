@@ -24,8 +24,18 @@
   box-sizing: border-box;
 }
 
+
 svg text > tspan {
   font-size: 14.5px;
+}
+
+svg {
+  font-size: 14px;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 6rem;
 }
 
 
@@ -256,9 +266,6 @@ p {
   padding: 1.5rem 0;
   gap: .2rem;
 }
-svg {
-  font-size: 14px;
-}
 
 
 .repo-header {
@@ -352,9 +359,33 @@ svg {
   gap: 0.25rem;
 }
 
+/* Features section */
+.Features {
+  margin-top: 6rem;
+}
+.Features h2 {
+  text-align: left;
+}
+
+ul:not(.nav-links){
+    list-style-type: circle;
+    list-style-position: inside;
+    text-align: left;
+    max-width: 52rem;
+    margin-bottom: 3rem;
+}
+
+.menu-link ul{
+    list-style-type: none ;
+}
+ ul li {
+    margin-bottom: .8rem;
+}
+
+
 /* Usage Section */
 .usage {
-  padding: 6rem 0;
+  padding: 0 0 6rem 0;
 }
 
 .usage-grid {
@@ -386,7 +417,6 @@ svg {
   max-width: 100%;
 }
 .code-block::-webkit-scrollbar {
-/*  display: none;*/
   width: .4rem;
 }
 
@@ -408,7 +438,6 @@ svg {
 .code-block pre {
   margin: 0;
   padding: 1.5rem;
-  background-color: #1f2937;
   color: #f9fafb;
   font-family: monospace;
   overflow-x: auto;
@@ -421,7 +450,6 @@ svg {
 .code-block.small pre {
   padding: 0.75rem;
   font-size: 0.75rem;
-  outline: 1px solid red;
 }
 
 .parameters-card {
@@ -590,6 +618,10 @@ svg {
   
   h2 {
     font-size: 2.5rem;
+  }
+
+  ul:not(.nav-links, .menu-link ul ){
+    list-style-position: outside;
   }
   
   .usage-grid {
