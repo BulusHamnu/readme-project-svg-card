@@ -311,7 +311,7 @@ async def get_selected_repos(user_name,repos) :
                         svg_list.append(svg_data)
 
             if not svg_list :
-                return [{ "error" : f"No Repos with this names are found. {[repo.get("name") for repo in repos]}"} , r.status ]
+                return [{ "error" : f"No Repos with this names are found. {str([repo.get('name') for repo in repos])}"} , r.status ]
 
             return [{ "data" : svg_list} , r.status ]
         else :
@@ -320,7 +320,7 @@ async def get_selected_repos(user_name,repos) :
 
 
 if __name__ == "__main__" :
-    svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
+    # svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
     # svgs = asyncio.run(get_repos(username,pinned_repo,selected_theme, imglink))
-    # svgs = asyncio.run(get_selected_repos(username,[]))
-    # print(json.dumps(svgs, indent=4))
+    svgs = asyncio.run(get_selected_repos(username,[{"name" : "this"}, { "name" : "that"}]))
+    print(json.dumps(svgs, indent=4))
