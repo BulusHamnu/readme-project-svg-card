@@ -249,8 +249,13 @@ async def get_repos(user_name,pinned,theme, img_link) :
                         likes_count = data2[i].get("stargazerCount")
                         repo_url = data2[i].get("url")
                         svg_data = create_svg(f"{user_name}_project_card{i}.svg",desc,name,img_link,lang,likes_count,theme)
+
+                        project_details = {
+                            "svg" : svg_data,
+                            "project_url" : repo_url
+                        }
                         
-                        svg_list.append(svg_data)
+                        svg_list.append(project_details)
 
                     return [{ "data" : svg_list }, r.status]
                 else :
@@ -277,7 +282,13 @@ async def get_repos(user_name,pinned,theme, img_link) :
 
                     svg_data = create_svg(f"{user_name}_project_card{i}.svg", desc, name, img_link, lang, likes_count,theme)
 
-                    svg_list.append(svg_data)
+                    project_details = {
+                            "svg" : svg_data,
+                            "project_url" : repo_url
+                        }
+
+                    svg_list.append(project_details)
+
                 return [{ "data" : svg_list} , r.status ]
             else :
                 error = await r.json()
@@ -308,7 +319,13 @@ async def get_selected_repos(user_name,repos) :
                         svg_data = create_svg(f"{user_name}_project_card{i}.svg", desc, name, 
                             repo.get("imageurl") if repo.get("imageurl") != "None" else None 
                             , lang, likes_count,repo.get("theme"))
-                        svg_list.append(svg_data)
+
+                        project_details = {
+                            "svg" : svg_data,
+                            "project_url" : repo_url
+                        }
+
+                        svg_list.append(project_details)
 
             if not svg_list :
                 return [{ "error" : f"No Repos with this names are found. {str([repo.get('name') for repo in repos])}"} , r.status ]
@@ -321,6 +338,6 @@ async def get_selected_repos(user_name,repos) :
 
 if __name__ == "__main__" :
     # svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
-    # svgs = asyncio.run(get_repos(username,pinned_repo,selected_theme, imglink))
-    svgs = asyncio.run(get_selected_repos(username,[{"name" : "this"}, { "name" : "that"}]))
-    print(json.dumps(svgs, indent=4))
+    svgs = asyncio.run(get_repos(username,pinned_repo,selected_theme, imglink))
+    # svgs = asyncio.run(get_selected_repos(username,[{"name" : "this"}, { "name" : "that"}]))
+    # print(json.dumps(svgs, indent=4))

@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function() {
     .then( svg => { 
       for(i=0; i<count ; i++) {
         svgCard = document.createElement("div"); 
-        svgCard.innerHTML = svg.data[i]; 
+        svgCard.innerHTML = svg.data[i].svg; 
         previewContent.appendChild(svgCard); 
       }
     })
