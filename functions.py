@@ -278,7 +278,7 @@ async def get_repos(user_name,pinned,theme, img_link) :
                     desc = data[i].get("description")
                     lang = data[i].get("language")
                     likes_count = data[i].get("stargazers_count")
-                    repo_url = data[i].get("url")
+                    repo_url = data[i].get("html_url")
 
                     svg_data = create_svg(f"{user_name}_project_card{i}.svg", desc, name, img_link, lang, likes_count,theme)
 
@@ -311,7 +311,7 @@ async def get_selected_repos(user_name,repos) :
                 desc = data[i].get("description")
                 lang = data[i].get("language")
                 likes_count = data[i].get("stargazers_count")
-                repo_url = data[i].get("url")
+                repo_url = data[i].get("html_url")
 
 
                 for repo in repos :
@@ -338,6 +338,6 @@ async def get_selected_repos(user_name,repos) :
 
 if __name__ == "__main__" :
     # svg = asyncio.run(get_repo(username, user_repo_name, selected_theme,imglink))
-    svgs = asyncio.run(get_repos(username,pinned_repo,selected_theme, imglink))
-    # svgs = asyncio.run(get_selected_repos(username,[{"name" : "this"}, { "name" : "that"}]))
+    # svgs = asyncio.run(get_repos(username,pinned_repo,selected_theme, imglink))
+    svgs = asyncio.run(get_selected_repos(username,[{"name" : "Youtube-Subscribtion-Api", "theme" : "dark"}, { "name" : "yodemy-music", "theme" : "light"}]))
     # print(json.dumps(svgs, indent=4))
