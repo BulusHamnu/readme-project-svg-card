@@ -267,7 +267,6 @@ p {
   gap: .2rem;
 }
 
-
 .repo-header {
   display: flex;
   align-items: center;
@@ -455,7 +454,7 @@ ul:not(.nav-links){
 .parameters-card {
   background: linear-gradient(to bottom right, #1f2937, #111827);
   border-radius: var(--border-radius);
-  padding: 2rem;
+  padding: 1rem;
   color: white;
   box-shadow: var(--shadow-lg);
   margin-bottom: 1rem;
@@ -498,6 +497,7 @@ ul:not(.nav-links){
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 2rem;
+  justify-content: center;
 }
 
 .example-card {
@@ -509,7 +509,7 @@ ul:not(.nav-links){
 }
 
 .example-preview {
-  padding: 1.5rem;
+  padding: 1rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -517,55 +517,8 @@ ul:not(.nav-links){
   border-bottom: 1px solid var(--color-border);
 }
 
-.example-svg {
-  width: 100%;
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(to bottom right, #1f2937, #111827);
-  border-radius: 0.5rem;
-  overflow: hidden;
-}
-
-.example-svg.light {
-  background: white;
-  border: 1px solid var(--color-border);
-}
-
-.example-svg.compact {
-  height: 100px;
-}
-
-.repo-card {
-  padding: 1rem;
-  width: 100%;
-  max-width: 250px;
-}
-
-.repo-icon.light {
-  background-color: #f3f4f6;
-  color: #1f2937;
-}
-
-.repo-icon.dark {
-  background-color: #3b82f6;
-}
-
-.example-svg.light .repo-header h4,
-.example-svg.light .repo-header span {
-  color: #1f2937;
-}
-
-.repo-header h4 {
-  font-size: 0.875rem;
-  color: white;
-  margin-bottom: 0.25rem;
-}
-
-.repo-header span {
-  font-size: 0.75rem;
-  color: #9ca3af;
+.example-preview img {
+  max-width:100%;
 }
 
 .example-code {
@@ -636,6 +589,15 @@ ul:not(.nav-links){
 .preview-content {
   padding: 1.5rem;
   } 
+
+  .example-preview {
+  padding: 1.5rem;
+}
+
+.parameters-card {
+  padding: 2rem;
+}
+
 }
 
 @media (max-width: 767px) {
