@@ -26,7 +26,7 @@ You can query the endpoint below to retrieve multiple repositories with custom S
 
 ### 📝 **Request Example**  
 ```sh
-GET https://svg-projects-card.com/api/username/repos?theme=dark&pinned=True
+GET https://svg-projects-card.onrender.com/api/username/repos?theme=dark&pinned=True
 ```
 
 ### 📩 **Response Example**  
@@ -44,7 +44,7 @@ To add a **cover image**, use a `POST` request (since `GET` does not support `im
 
 #### **POST Request Example**  
 ```sh
-POST https://svg-projects-card.com/api/username/repos
+POST https://svg-projects-card.onrender.com/api/username/repos
 ```
 
 #### **Request Body (JSON Format)**  
@@ -72,7 +72,7 @@ POST https://svg-projects-card.com/api/username/repos
 
 #### **JavaScript Fetch Example**  
 ```js
-fetch("https://svg-projects-card.com/api/BulusHamnu/repos", {
+fetch("https://svg-projects-card.onrender.com/api/BulusHamnu/repos", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
@@ -118,27 +118,27 @@ To retrieve a **single repository's SVG card**, use this format:
 
 ### 📝 **Request Example**  
 ```sh
-GET https://svg-projects-card.com/api/username/repos/Demi-Tasks?theme=dark
+GET https://svg-projects-card.onrender.com/api/username/repos/Demi-Tasks?theme=dark
 ```
 
 ### 📩 **Response Example**  
 you get an svg/image return that you can embed directly to the html img tag
 
-<img src="https://svg-projects-card.com/api/bulushamnu/repos/Demi-Tasks?theme=dark" alt="Demi-Tasks">
+<img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark" alt="Demi-Tasks">
 
 
 ### 🎨 **Embedding in Markdown**  
 ```markdown
-![Demi-Tasks](https://svg-projects-card.com/api/uesrname/repos/Demi-Tasks?theme=dark)
+![Demi-Tasks](https://svg-projects-card.onrender.com/api/uesrname/repos/Demi-Tasks?theme=dark)
 ```
 
 ### 🎨 **Embedding in HTML**  
 ```html
-<img src="https://svg-projects-card.com/api/bulushamnu/repos/readme-svg-projects-card?theme=dark" alt="readme-svg-projects-card">
+<img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/readme-svg-projects-card?theme=dark" alt="readme-svg-projects-card">
 ```
 
 ### 🎨 **Preview of the Response**  
-![readme-svg-projects-card](https://svg-projects-card.com/api/bulushamnu/repos/readme-svg-projects-card?theme=dark)
+![readme-svg-projects-card](https://svg-projects-card.onrender.com/api/bulushamnu/repos/readme-svg-projects-card?theme=dark)
 
 ---
 
@@ -148,11 +148,11 @@ This API enhances your **GitHub README.md** by embedding stylish project cards.
 
 ### 📝 **Embedding a Single Project**  
 ```markdown
-![Project Visualization](https://svg-projects-card.com/api/bulushamnu/repos/Demi-Tasks?theme=dark)
+![Project Visualization](https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark)
 ```
 or  
 ```html
-<img src="https://svg-projects-card.com/api/bulushamnu/repos/Portfolio-V1?theme=dark" alt="Portfolio-V1">
+<img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/Portfolio-V1?theme=dark" alt="Portfolio-V1">
 ```
 
 ### 📌 **Displaying Multiple Projects in a README**  
