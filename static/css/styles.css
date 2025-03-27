@@ -25,14 +25,6 @@
 }
 
 
-svg text > tspan {
-  font-size: 14.5px;
-}
-
-svg {
-  font-size: 14px;
-}
-
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 6rem;
@@ -204,7 +196,7 @@ p {
 /* Preview SVG */
 .preview-container {
   position: relative;
-  height: 540px;
+  height: 580px;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
@@ -258,13 +250,13 @@ p {
 
 .preview-content {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 350px));
-  grid-template-rows: 230px;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 350px));
+  grid-template-rows: repeat(auto-fill, 230px);
   justify-content: center;
   height: 100%;
   max-width: 100%;
   padding: 1.5rem 0;
-  gap: .2rem;
+  gap: .5rem;
 }
 
 .repo-header {

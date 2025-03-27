@@ -155,8 +155,8 @@ or
 <img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/Portfolio-V1?theme=dark" alt="Portfolio-V1">
 ```
 
-### 📌 **Displaying Multiple Projects in a README**  
-GitHub does not allow direct scripting, but you can update your README dynamically using **GitHub Actions**.  
+### 📌 **Displaying Multiple Projects in a README** 
+GitHub does not allow direct scripting, but you can update your README dynamically using **GitHub Actions**.    
 
 #### **How it Works:**  
 1. Create a **GitHub workflow** that runs manually.  
@@ -164,6 +164,7 @@ GitHub does not allow direct scripting, but you can update your README dynamical
 3. The response is written to your README dynamically.  
 
 you can find the yaml workflow file in this repo, edit and use it according to your need
+`for now this does'nt work im still working on it.`
 
 ## 📧 Contributing  
 

@@ -106,7 +106,7 @@ def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
     height = 430
 
     head_rect_y = 225
-    head_text_Y = 249
+    head_text_Y = 247
     desc_text_y = 265
     lang_sym_y = 390
     lang_text_y = 395
@@ -125,7 +125,7 @@ def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
 
 
     # create svg file
-    svg = svgwrite.Drawing(file_name, size=(width, height), profile=("full"))
+    svg = svgwrite.Drawing(file_name,size=(width, height) , profile=("full"), preserveAspectRatio="xMidYMid meet")
     svg.add(svg.rect(insert=((width - width) / 2, 0), size=(width, height), rx=5, ry=5, fill=(themes_colors[themes].get("background"))))
 
     #chek for the image parameter
@@ -147,27 +147,27 @@ def create_svg(file_name,desc,title,img_link,lang,like_count,themes) :
         title += ".."
 
     svg.add(svg.text(title, insert=(width / 2, head_text_Y), fill=themes_colors[themes].get("text"), font_size="20px",text_anchor="middle"))
-    paragraph = svg.text("", insert=(width / 2, desc_text_y), fill=themes_colors[themes].get("text"), font_size="16px", text_anchor="middle")
+    paragraph = svg.text("", insert=(width / 2, desc_text_y), fill=themes_colors[themes].get("text"), font_size="0.9em", text_anchor="middle")
 
     # to create multi-line and avoid overflow in svg so i broke the desc
     if desc :
         wrapped_text = textwrap.wrap(desc, width=40)
         for i in range(len(wrapped_text)):
-            if i < 5:
-                if i == 4:
+            if i < 4:
+                if i == 3:
                     wrapped_text[i] += "..."
-                line = svg.tspan(wrapped_text[i], x=[29], dy=["1.2em"], text_anchor="start")
+                line = svg.tspan(wrapped_text[i], x=[29], dy=["1.6em"], text_anchor="start")
                 paragraph.add(line)
                 # width / 2
     else :
         desc = "No description for this project."
-        line = svg.tspan(desc, x=[width / 2], dy=["1.2em"])
+        line = svg.tspan(desc, x=[width / 2], dy=["1.35em"])
         paragraph.add(line)
 
     svg.add(paragraph)
     lang = "None" if not lang else lang
     svg.add(svg.circle(center=(40, lang_sym_y), r=8, fill=colors_code[lang ]))
-    svg.add(svg.text(lang, insert=(55, lang_text_y), fill=themes_colors[themes].get("text"), font_size="15px"))
+    svg.add(svg.text(lang, insert=(55, lang_text_y), fill=themes_colors[themes].get("text"), font_size="14px"))
 
     #from web
     star_points = [
@@ -234,7 +234,6 @@ async def get_repos(user_name,pinned,theme, img_link) :
             r = await session.post(graph_endpoint,json={"query": query, "variables": {"login": f'{user_name}'}}, headers=headers)
 
             print(f'response with {r.status}')
-            print("______________")
             if r.status == 200 :
                 data1 = await r.json()
                 error = data1.get("errors")
@@ -301,7 +300,6 @@ async def get_selected_repos(user_name,repos) :
     async with aiohttp.ClientSession() as session :
         r = await session.get(endpoint, headers = headers)
 
-        print("______________")
         if r.status == 200 :
             data = await r.json()
 
