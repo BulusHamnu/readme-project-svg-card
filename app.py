@@ -1,9 +1,9 @@
 #flask app 
 from flask import Flask, render_template, jsonify, url_for, request
 from flask_restful import Api, abort, reqparse
-from .resource import Singlerepo, Repos
+from api.resource import Singlerepo, Repos
 from flask_cors import CORS
-from . import logger, FLASK_DEBUG
+from api import logger, FLASK_DEBUG
 
 
 app = Flask(__name__)
