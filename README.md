@@ -29,9 +29,10 @@ You can query the endpoint below to retrieve multiple repositories with custom S
 GET https://svg-projects-card.onrender.com/api/username/repos?theme=dark&pinned=True
 ```
 
-### 📩 **Response Example**  
+### 📩 **Response Example 200**  
 ```json
 {
+    "status": true,
     "data": [
         "<svg>...</svg>",
         "<svg>...</svg>"
@@ -50,6 +51,7 @@ POST https://svg-projects-card.onrender.com/api/username/repos
 #### **Request Body (JSON Format)**  
 ```json
 {
+    "status": true,
     "repos": [
         {
             "name": "animeq-game",
@@ -100,6 +102,7 @@ fetch("https://svg-projects-card.onrender.com/api/BulusHamnu/repos", {
 ### 📩 **Response Example**  
 ```json
 {
+    "status": true,
     "data": [
         "<svg>...</svg>",
         "<svg>...</svg>"
@@ -156,24 +159,11 @@ or
 ```
 
 ### 📌 **Displaying Multiple Projects in a README** 
-GitHub does not allow direct scripting, but you can update your README dynamically using **GitHub Actions**.    
-
-#### **How it Works:**  
-1. Create a **GitHub workflow** that runs manually.  
-2. The workflow queries the API using `curl`.  
-3. The response is written to your README dynamically.  
-
-you can find the yaml workflow file in this repo, edit and use it according to your need
-`for now this does'nt work im still working on it.`
-
-## 📧 Contributing  
-
-If you find a bug, have a feature request, or want to contribute, feel free to submit a **pull request** or open an **issue**.  
+Well i am still working on that 
 
 ---
 
-### ⭐ **Like this project? Consider giving it a star on GitHub!**  
+**Like this project? Consider giving it a star on GitHub!**  
 
-Happy coding! 🚀
 
 
