@@ -4,11 +4,8 @@ import aiohttp
 import base64
 import textwrap
 import json
-import os
 import requests
-from dotenv import load_dotenv
-load_dotenv()
-TOKEN = os.environ.get("GITHUB_TOKEN")
+from . import TOKEN, logger
 
 # variable for testing functions and return
 username = "BulusHamnu"
@@ -233,14 +230,14 @@ async def get_repos(user_name,pinned,theme, img_link) :
         async with aiohttp.ClientSession() as session:
             r = await session.post(graph_endpoint,json={"query": query, "variables": {"login": f'{user_name}'}}, headers=headers)
 
-            print(f'response with {r.status}')
             if r.status == 200 :
                 data1 = await r.json()
-                error = data1.get("errors")
+                error = data1.get("errors") # check for graphql error
                 if not error :
                     data2 = data1["data"]["user"]["pinnedItems"]["nodes"]
 
                     svg_list = []
+                    # generating list of svg strings
                     for i in range(len(data2)):
                         name = data2[i].get("name")
                         desc = data2[i].get("description")
@@ -256,22 +253,21 @@ async def get_repos(user_name,pinned,theme, img_link) :
                         
                         svg_list.append(project_details)
 
-                    return [{ "data" : svg_list }, r.status]
+                    return { "status": True, "data" : svg_list }
                 else :
-                    rep = { "status" : error[0].get("type"), "message" : error[0].get("message")}
-                    return [{ "error" : rep } , r.status ]
+                    return { "status" : False, "error" : error } 
+
             else :
                 error = await r.json()
-                return [{ "error" : error } , r.status ]
+                return { "status": False, "error": error } 
     else :
         async with aiohttp.ClientSession() as session :
             r = await session.get(endpoint, headers = headers)
-
-            print("______________")
             if r.status == 200 :
                 data = await r.json()
 
                 svg_list = []
+                # generate list of svg strings
                 for i in range(len(data)):
                     name = data[i].get("name")
                     desc = data[i].get("description")
@@ -288,10 +284,10 @@ async def get_repos(user_name,pinned,theme, img_link) :
 
                     svg_list.append(project_details)
 
-                return [{ "data" : svg_list} , r.status ]
+                return { "status": True, "data" : svg_list } 
             else :
                 error = await r.json()
-                return [{ "error" : error } , r.status ]
+                return {  "status": False, "error": error } 
 
 
 async def get_selected_repos(user_name,repos) :

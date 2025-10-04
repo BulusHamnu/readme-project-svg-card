@@ -1,5 +1,5 @@
 from marshmallow import Schema, fields, validate, ValidationError
-from functions import themes_colors
+from .functions import themes_colors
 
 #mershmellow
 class ReposValidator(Schema) :

@@ -16,6 +16,7 @@ gunicorn==23.0.0
 idna==3.10
 itsdangerous==2.2.0
 Jinja2==3.1.6
+logging==0.4.9.6
 MarkupSafe==3.0.2
 marshmallow==3.26.1
 multidict==6.1.0

@@ -1,8 +1,9 @@
 #flask app 
-from flask import Flask, render_template, jsonify, url_for
+from flask import Flask, render_template, jsonify, url_for, request
 from flask_restful import Api, abort, reqparse
-from resource import Singlerepo, Repos
+from .resource import Singlerepo, Repos
 from flask_cors import CORS
+from . import logger, FLASK_DEBUG
 
 
 app = Flask(__name__)
@@ -11,29 +12,27 @@ CORS(app)
 
 #defining routes
 @app.route("/")
-@app.route("/home")
 def home() :
-    return render_template("index.html", title = "Home page | Svg project card")
-
-
-@app.route("/docs")
-def docs() :
-    return render_template("docs.html", title = "Docs | Svg projects card")
-
-
-@app.route("/api/repos")
-def missing_username() :
-    return jsonify({ "message" : "missing username value, please use: /api/<username>/repos" }), 400
-
+    return "<h1>Hello world</h1>", 200
 
 api.add_resource(Repos, "/api/<username>/repos")
 api.add_resource(Singlerepo, "/api/<username>/repos/<name>" ) 
 
 
+# error handlers
 @app.errorhandler(404)
-def error_404(error) :
-    return render_template("error-page.html", title = "Error Page | Svg project card")
+def error_404(error):
+    logger.error("User tried to access undefined route: %s", request.path)
+    return jsonify({ "status" : False,
+    "message": f"404 Not Found: {request.path} cannot be accessed." }), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    return jsonify({
+        "status" : False,
+        "message": "An unexpected error occurred."
+    }), 500
 
 
 if __name__ == "__main__" :
-    app.run(debug=True)
+    app.run(debug=FLASK_DEBUG)
