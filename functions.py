@@ -210,12 +210,11 @@ async def get_repo(user_name, repo_name, theme, img_link) :
             likes_count = data.get("stargazers_count")
             repo_url = data.get("url")
             svg_data = create_svg(f"{user_name}_{repo_name}.svg", desc, name, img_link, lang, likes_count, theme)
-
             
-            return [svg_data , r.status]
+            return { "status": True, "data": svg_data } 
         else:
-            data = await r.json()
-            return [{"error" : data} , r.status ]
+            error = await r.json()
+            return { "status": False, "error" : error}
             
 
 async def get_repos(user_name,pinned,theme, img_link) :

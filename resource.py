@@ -67,16 +67,21 @@ class Repos(Resource) :
 class Singlerepo(Resource) :
     def get(self,username,name) :
         if len(username) <= 3 :
-            abort(400, message = "please provide a valid username!")
+            return { "status": False, "message" : "please provide a valid username." }, 400
+        logger.info("Getting  %s repo for: %s",name, username)
 
         try :
             args = repo_validator.load(request.args)
 
             theme = args.get("theme")
             imageurl = args.get("imageurl") if args.get("imageurl") else None
-            svg_content = asyncio.run(get_repo(username, name, theme, imageurl))
+            svg_result = asyncio.run(get_repo(username, name, theme, imageurl))
+            # check for error
+            if not svg_result.get("status") :
+                logger.error("An error occured while getting repo for: %s - %s", username, "Repos not found.") 
+                return { "status": False, "message" : "Repo Not Found" }, 404
 
-            return Response(svg_content[0], content_type="image/svg+xml", status = svg_content[1])
+            return Response(svg_result.get("data"), content_type="image/svg+xml", status = 200 )
 
         except ValidationError as error:
             abort(400, message = error.messages )
