@@ -45,17 +45,23 @@ class Repos(Resource) :
 
     def post(self,username) :
         if len(username) <= 3 :
-            abort(400, message = "please provide a valid username!")
+            return { "status": False, "message" : "please provide a valid username." }, 400
+        logger.info("Getting all repos for: %s", username)
 
         try :
             json_data = repos_json_validator.load(request.json)
             repos = json_data.get("repos")
 
-            svg_list = asyncio.run(get_selected_repos(username,repos))
+            svg_list_result = asyncio.run(get_selected_repos(username,repos))
+
+            if not svg_list_result.get("status") :
+                logger.error("An error occured while getting repos for: %s - %s", username, svg_list_result.get("error") or "Repos not found." ) 
+
+                return { "status" : False, "message" : f"No Repos with this names are found { str([repo.get('name') for repo in repos]) }"} , 404
             
-            return svg_list[0] , svg_list[1]
+            return { "status": True, "data": svg_list_result.get("data") } , 200
         except ValidationError as error :
-            abort(400, message = error.messages )
+            return { "status" : False, "message" : error.messages }, 400
 
 
 class Singlerepo(Resource) :

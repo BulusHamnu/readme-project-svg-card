@@ -322,12 +322,12 @@ async def get_selected_repos(user_name,repos) :
                         svg_list.append(project_details)
 
             if not svg_list :
-                return [{ "error" : f"No Repos with this names are found. {str([repo.get('name') for repo in repos])}"} , r.status ]
+                return { "status" : False }
 
-            return [{ "data" : svg_list} , r.status ]
+            return { "status": True, "data" : svg_list }
         else :
             error = await r.json()
-            return [{ "error" : error } , r.status ]
+            return { "status": False, "error" : error } 
 
 
 if __name__ == "__main__" :
