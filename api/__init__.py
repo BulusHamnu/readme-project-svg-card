@@ -11,7 +11,7 @@ FLASK_DEBUG = os.environ.get("FLASK_DEBUG")
 logging.basicConfig(level=logging.INFO, format='%(levelname)s [%(asctime)s] - %(message)s')
 
 logger = logging.getLogger(__name__)
-logger.error("App started %s", "Bulus")
+# logger.error("App started %s", "Bulus")
 
 class AppError(HTTPException) :
   def __init__(self, code, message ):

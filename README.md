@@ -127,7 +127,7 @@ GET https://svg-projects-card.onrender.com/api/username/repos/Demi-Tasks?theme=d
 ### 📩 **Response Example**  
 you get an svg/image return that you can embed directly to the html img tag
 
-<img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark" alt="Demi-Tasks">
+<img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=light" alt="Demi-Tasks">
 
 
 ### 🎨 **Embedding in Markdown**  
