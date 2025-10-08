@@ -132,16 +132,16 @@ you get an svg/image return that you can embed directly to the html img tag
 
 ### 🎨 **Embedding in Markdown**  
 ```markdown
-![Demi-Tasks](https://svg-projects-card.onrender.com/api/uesrname/repos/Demi-Tasks?theme=dark)
+![Demi-Tasks](https://svg-projects-card.onrender.com/api/username/repos/Demi-Tasks?theme=dark)
 ```
 
 ### 🎨 **Embedding in HTML**  
 ```html
-<img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/readme-svg-projects-card?theme=dark" alt="readme-svg-projects-card">
+<img src="https://svg-projects-card.onrender.com/api/BulusHamnu/repos/readme-svg-projects-card?theme=dark" alt="readme-svg-projects-card">
 ```
 
 ### 🎨 **Preview of the Response**  
-![readme-svg-projects-card](https://svg-projects-card.onrender.com/api/bulushamnu/repos/readme-svg-projects-card?theme=dark)
+![readme-svg-projects-card](https://svg-projects-card.onrender.com/api/BulusHamnu/repos/readme-svg-projects-card?theme=dark)
 
 ---
 
@@ -151,11 +151,11 @@ This API enhances your **GitHub README.md** by embedding stylish project cards.
 
 ### 📝 **Embedding a Single Project**  
 ```markdown
-![Project Visualization](https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark)
+![Project Visualization](https://svg-projects-card.onrender.com/api/BulusHamnu/repos/Demi-Tasks?theme=dark)
 ```
 or  
 ```html
-<img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/Portfolio-V1?theme=dark" alt="Portfolio-V1">
+<img src="https://svg-projects-card.onrender.com/api/BulusHamnu/repos/Portfolio-V1?theme=dark" alt="Portfolio-V1">
 ```
 
 ### 📌 **Displaying Multiple Projects in a README** 
