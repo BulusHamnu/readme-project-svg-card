@@ -1,77 +1,94 @@
-{% extends "layout.html" %}
-
-{% block style %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/docs-style.css')}}">
-{% endblock %}
-
-{% block content %}
+{% extends "layout.html" %} {% block style %}
+<link
+  rel="stylesheet"
+  href="{{ url_for('static', filename='css/docs-style.css')}}"
+/>
+{% endblock %} {% block content %}
 <section class="container menu-link" id="menu-link">
-    <p><b>Menu</b></p>
-    <ul>
-        <li><a href="#getting-all-repos">Getting all repositories</a></li>
-        <li><a href="#getting-a-single-repo">Getting a single repository</a></li>
-        <li><a href="#github-example">GitHub example</a></li>
-    </ul>
+  <p><b>Menu</b></p>
+  <ul>
+    <li><a href="#getting-all-repos">Getting all repositories</a></li>
+    <li><a href="#getting-a-single-repo">Getting a single repository</a></li>
+    <li><a href="#github-example">GitHub example</a></li>
+  </ul>
 </section>
 <section class="container getting-all-repos" id="getting-all-repos">
-    <h3>Getting All Repositories</h3>
-    <p>You can query the endpoint below to retrieve multiple project repositories with custom SVG cards.</p>
-    <p>To get only pinned repositories, use the <mark>pinned=True</mark> parameter. To get all public repositories, use <mark>pinned=False</mark>.</p>
-    <p>you can also choose one of four available themes: <mark> dark | light | warm | cool.</mark></p>
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Request Example</div>
-        </div>
-        <pre><code class="language-python">GET https://svg-projects-card.onrender.com/api/bulushamnu/repos?theme=dark&pinned=True</code></pre>
+  <h3>Getting All Repositories</h3>
+  <p>
+    You can query the endpoint below to retrieve multiple project repositories
+    with custom SVG cards.
+  </p>
+  <p>
+    To get only pinned repositories, use the <mark>pinned=True</mark> parameter.
+    To get all public repositories, use <mark>pinned=False</mark>.
+  </p>
+  <p>
+    you can also choose one of four available themes:
+    <mark> dark | light | warm | cool.</mark>
+  </p>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Request Example</div>
     </div>
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Reponse Example</div>
-        </div>
-        <pre><code class="language-javascript">
+    <pre><code class="language-python">GET https://svg-projects-card.onrender.com/api/bulushamnu/repos?theme=dark&pinned=True</code></pre>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Reponse Example</div>
+    </div>
+    <pre><code class="language-javascript">
 {
     "data" : [
     "list of raw svg images"
     ]
 }
 </code></pre>
+  </div>
+  <h4>Adding Cover Images</h4>
+  <p>
+    You cannot use the <mark>imageurl</mark> parameter in a GET request because
+    it does not specify which repository the image should be added to.
+  </p>
+  <p>
+    To add a cover image, use the POST method on the same endpoint without query
+    parameters.
+  </p>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Endpoint</div>
     </div>
-    <h4>Adding Cover Images</h4>
-    <p>You cannot use the <mark>imageurl</mark> parameter in a GET request because it does not specify which repository the image should be added to.</p>
-    <p>To add a cover image, use the POST method on the same endpoint without query parameters.</p>
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Endpoint</div>
-        </div>
-        <pre><code class="language-python">POST https://svg-projects-card.onrender.com/api/bulushamnu/repos</code></pre>
+    <pre><code class="language-python">POST https://svg-projects-card.onrender.com/api/bulushamnu/repos</code></pre>
+  </div>
+  <h4>Request Body (JSON Format)</h4>
+  <p>
+    Send a JSON body containing a list of repository names, themes, and optional
+    <mark>imageurl</mark> values (ensure it is a valid image link).
+  </p>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Json example</div>
     </div>
-    <h4>Request Body (JSON Format)</h4>
-    <p>Send a JSON body containing a list of repository names, themes, and optional <mark>imageurl</mark> values (ensure it is a valid image link).</p>
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Json example</div>
-        </div>
-        <pre>
+    <pre>
     <code class="language-javascript">
 {
     repos : [
@@ -98,18 +115,18 @@
 }
     </code>
 </pre>
+  </div>
+  <h4>JavaScript Fetch Example</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Request example</div>
     </div>
-    <h4>JavaScript Fetch Example</h4>
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Request example</div>
-        </div>
-        <pre>
+    <pre>
     <code class="language-javascript">
 fetch("https://svg-projects-card.onrender.com/api/BulusHamnu/repos", {
     method : "POST",
@@ -119,17 +136,17 @@ fetch("https://svg-projects-card.onrender.com/api/BulusHamnu/repos", {
     }) })
         </code>
     </pre>
+  </div>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Reponse-type</div>
     </div>
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Reponse-type</div>
-        </div>
-        <pre><code class="language-javascript">
+    <pre><code class="language-javascript">
 {
     "data" : [
         "list of raw SVG images"
@@ -137,70 +154,99 @@ fetch("https://svg-projects-card.onrender.com/api/BulusHamnu/repos", {
 }
 </code>
 </pre>
-    </div>
+  </div>
 </section>
 <section class="container getting-a-single-repo" id="getting-a-single-repo">
-    <h3>Getting a Single Repository</h3>
-    <p>To retrieve a custom SVG card for a single repository, use the following format</p>
-    <ul>
-        <li>The theme parameter accepts one of four options: <mark>dark | light | warm | cool.</mark></li>
-        <li>The <mark>imageurl</mark> parameter (optional) can be added to include a cover image (ensure it's a valid URL)</li>
-        <li>The response is an SVG image that can be embedded directly using the &lt;img&gt; tag.</li>
-    </ul>
+  <h3>Getting a Single Repository</h3>
+  <p>
+    To retrieve a custom SVG card for a single repository, use the following
+    format
+  </p>
+  <ul>
+    <li>
+      The theme parameter accepts one of four options:
+      <mark>dark | light | warm | cool.</mark>
+    </li>
+    <li>
+      The <mark>imageurl</mark> parameter (optional) can be added to include a
+      cover image (ensure it's a valid URL)
+    </li>
+    <li>
+      The response is an SVG image that can be embedded directly using the
+      &lt;img&gt; tag.
+    </li>
+  </ul>
 
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Request Example</div>
-        </div>
-        <pre><code class="language-html">&lt;img src="/api/bulushamnu/repos/Demi-Tasks?theme=dark" alt="Demi-Tasks" &gt;</code></pre>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Request Example</div>
     </div>
-    <h4>Response example</h4>
-    <img style="max-width:100%;" src="/api/bulushamnu/repos/Demi-Tasks?theme=dark" alt="Demi-Tasks">
+    <pre><code class="language-html">&lt;img src="/api/bulushamnu/repos/Demi-Tasks?theme=dark" alt="Demi-Tasks" &gt;</code></pre>
+  </div>
+  <h4>Response example</h4>
+  <img
+    style="max-width: 100%"
+    src="/api/bulushamnu/repos/Demi-Tasks?theme=dark"
+    alt="Demi-Tasks"
+  />
 </section>
 <section class="container github-example" id="github-example">
-    <h3>GitHub Integration</h3>
-    <p>This API is designed to enhance your GitHub README.md file with stylish SVG visualizations of your projects.</p>
-    <h4>Embedding a Single Repository in a README</h4>
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Request Example</div>
-        </div>
-        <pre><code class="language-html">![Project Visualization](https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark)</code></pre>
+  <h3>GitHub Integration</h3>
+  <p>
+    This API is designed to enhance your GitHub README.md file with stylish SVG
+    visualizations of your projects.
+  </p>
+  <h4>Embedding a Single Repository in a README</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Request Example</div>
     </div>
-    <h4>Or</h4>
-    <div class="code-block">
-        <div class="code-header">
-            <div class="window-controls">
-                <div class="control red"></div>
-                <div class="control yellow"></div>
-                <div class="control green"></div>
-            </div>
-            <div class="title">Request Example</div>
-        </div>
-        <pre><code class="language-html">&lt;img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark" alt="Demi-Tasks"&gt;</code></pre>
+    <pre><code class="language-html">![Project Visualization](https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark)</code></pre>
+  </div>
+  <h4>Or</h4>
+  <div class="code-block">
+    <div class="code-header">
+      <div class="window-controls">
+        <div class="control red"></div>
+        <div class="control yellow"></div>
+        <div class="control green"></div>
+      </div>
+      <div class="title">Request Example</div>
     </div>
+    <pre><code class="language-html">&lt;img src="https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark" alt="Demi-Tasks"&gt;</code></pre>
+  </div>
 
-    <h3>Displaying Multiple Projects in a README</h3>
-    <p>GitHub does not allow direct scripting in README files, but you can bypass this limitation using GitHub Actions.</p>
-    <h4>How it Works:</h4>
-    <ul>
-        <li>Create a GitHub workflow that triggers manually.</li>
-        <li>The workflow queries the API using curl.</li>
-        <li>The response is written to your README file dynamically.</li>
-    </ul>
-    <p>I have a sample workflow YAML file on this site GitHub repo <a href="https://github.com/BulusHamnu/readme-svg-projects-card.git" target="_blank" style="color: darkblue; text-decoration: underline;">Here</a> that you can download and customize based on your needs.</p>
-    <p><a class="back-to-top" href="#menu-link">Back to the top</a></p>
+  <h3>Displaying Multiple Projects in a README</h3>
+  <p>
+    GitHub does not allow direct scripting in README files, but you can bypass
+    this limitation using GitHub Actions.
+  </p>
+  <h4>How it Works:</h4>
+  <ul>
+    <li>Create a GitHub workflow that triggers manually.</li>
+    <li>The workflow queries the API using curl.</li>
+    <li>The response is written to your README file dynamically.</li>
+  </ul>
+  <p>
+    I have a sample workflow YAML file on this site GitHub repo
+    <a
+      href="https://github.com/BulusHamnu/readme-svg-projects-card.git"
+      target="_blank"
+      style="color: darkblue; text-decoration: underline"
+      >Here</a
+    >
+    that you can download and customize based on your needs.
+  </p>
+  <p><a class="back-to-top" href="#menu-link">Back to the top</a></p>
 </section>
-{% endblock %}
-{% block script %}
-{% endblock %}
+{% endblock %} {% block script %} {% endblock %}

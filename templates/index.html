@@ -1,199 +1,254 @@
-
 {% extends "layout.html" %}
 
 <!-- content block -->
 {% block content %}
-  <!-- Hero Section -->
-  <section class="hero" id="hero">
-    <div class="container">
-      <div class="badge">Introducing</div>
-      <h1>Visualize Your GitHub Projects with Dynamic SVGs</h1>
-      <p class="lead">
-        An elegant API that queries GitHub repositories and generates beautiful SVG visualizations that you can embed anywhere — perfect for your README profiles.
+<!-- Hero Section -->
+<section class="hero" id="hero">
+  <div class="container">
+    <div class="badge">Introducing</div>
+    <h1>Visualize Your GitHub Projects with Dynamic SVGs</h1>
+    <p class="lead">
+      An elegant API that queries GitHub repositories and generates beautiful
+      SVG visualizations that you can embed anywhere — perfect for your README
+      profiles.
+    </p>
+    <div class="cta-buttons">
+      <a
+        href="https://github.com/BulusHamnu/readme-svg-projects-card.git"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="github-button"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"
+          ></path>
+          <path d="M9 18c-4.51 2-5-2-7-2"></path>
+        </svg>
+        <span>View on GitHub</span>
+      </a>
+    </div>
+
+    <!-- Preview of SVG -->
+  </div>
+  <div class="preview-container">
+    <div class="preview-svg">
+      <div class="preview-header">
+        <div class="window-controls">
+          <div class="control red"></div>
+          <div class="control yellow"></div>
+          <div class="control green"></div>
+        </div>
+        <div class="title">repository-visualization</div>
+      </div>
+      <div class="preview-content">
+        <!-- svgs preview will be dynamically added here -->
+      </div>
+    </div>
+  </div>
+
+  <div class="container Features">
+    <h2>Features</h2>
+    <ul>
+      <li>
+        <b>Integration with GitHub README.md</b> Query a specific project
+        repository and generate a custom SVG/image that can be added to your
+        README.
+      </li>
+      <li>
+        <b>Integration with HTML pages</b> Retrieve all, selected, or pinned
+        repositories in a JSON format containing beautifully decorated SVG cards
+        that can be easily added to your webpage.
+      </li>
+      <li>
+        <b>Themes and Customization</b> Choose from different themes and styles
+        to personalize your SVG cards.
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- Usage Section -->
+<section id="usage" class="usage">
+  <div class="container">
+    <div class="section-header">
+      <div class="badge">Usage</div>
+      <h2>How to Use GitSVG API</h2>
+      <p>
+        Follow these simple steps to integrate dynamic SVGs into your projects.
       </p>
-      <div class="cta-buttons">
-        <a href="https://github.com/BulusHamnu/readme-svg-projects-card.git" target="_blank" rel="noopener noreferrer" class="github-button">
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
-            <path d="M9 18c-4.51 2-5-2-7-2"></path>
-          </svg>
-          <span>View on GitHub</span>
-        </a>
-      </div>
-      
-      <!-- Preview of SVG -->
-      
     </div>
-    <div class="preview-container">
-        <div class="preview-svg">
-          <div class="preview-header">
-            <div class="window-controls">
-              <div class="control red"></div>
-              <div class="control yellow"></div>
-              <div class="control green"></div>
-            </div>
-            <div class="title">repository-visualization</div>
-          </div>
-          <div class="preview-content">
-            <!-- svgs preview will be dynamically added here -->
-          </div>
-        </div>
-      </div>
 
-      <div class="container Features">
-        <h2>Features</h2>
-        <ul>
-            <li><b>Integration with GitHub README.md</b> Query a specific project repository and generate a custom SVG/image that can be added to your README.</li>
-            <li><b>Integration with HTML pages</b> Retrieve all, selected, or pinned repositories in a JSON format containing beautifully decorated SVG cards that can be easily added to your webpage.</li>
-            <li><b>Themes and Customization</b> Choose from different themes and styles to personalize your SVG cards.</li>
-        </ul>
-      </div>
-  </section>
-      
-      
-  <!-- Usage Section -->
-  <section id="usage" class="usage">
-    <div class="container">
-      <div class="section-header">
-        <div class="badge">Usage</div>
-        <h2>How to Use GitSVG API</h2>
-        <p>Follow these simple steps to integrate dynamic SVGs into your projects.</p>
-      </div>
-      
-      <div class="usage-grid">
-        <div class="usage-steps">
-          <div class="usage-step">
-            <h3>1. Make a GET request to our API</h3>
-            <p>Simply call our endpoint with your GitHub username and repository name.</p>
-            <div class="code-block">
-              <div class="code-header" >
-                <div class="window-controls">
-                  <div class="control red"></div>
-                  <div class="control yellow"></div>
-                  <div class="control green"></div>
-                </div>
-                <div class="title">API Request Example</div>
+    <div class="usage-grid">
+      <div class="usage-steps">
+        <div class="usage-step">
+          <h3>1. Make a GET request to our API</h3>
+          <p>
+            Simply call our endpoint with your GitHub username and repository
+            name.
+          </p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="window-controls">
+                <div class="control red"></div>
+                <div class="control yellow"></div>
+                <div class="control green"></div>
               </div>
-              <pre class="language-javascript"><code >GET https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark&imageurl=https://bulusdev.vercel.app/Asserts/images/demi_tasks_cover.png</code></pre>
+              <div class="title">API Request Example</div>
             </div>
-          </div>
-          
-          <div class="usage-step">
-            <h3>2. Receive SVG Response</h3>
-            <p>The API returns an SVG/IMAGE representation of your project with relevant metadata.</p>
-            <div class="code-block">
-              <div class="code-header" >
-                <div class="window-controls">
-                  <div class="control red"></div>
-                  <div class="control yellow"></div>
-                  <div class="control green"></div>
-                </div>
-                <div class="title">Response Example</div>
-              </div>
-              <pre><code class="language-html">&lt;svg width="400" height="200" xmlns="http://www.w3.org/2000/svg"&gt;&lt;!-- SVG content --&gt;&lt;/svg&gt;</code></pre>
-            </div>
-          </div>
-          
-          <div class="usage-step">
-            <h3>3. Embed in Your README</h3>
-            <p>Add the image to your GitHub profile or repository README.</p>
-            <div class="code-block">
-              <div class="code-header">
-                <div class="window-controls">
-                  <div class="control red"></div>
-                  <div class="control yellow"></div>
-                  <div class="control green"></div>
-                </div>
-                <div class="title">Markdown Example</div>
-              </div>
-              <pre ><code class="language-javascript" >![Project Visualization](https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark&imageurl=https://bulusdev.vercel.app/Asserts/images/demi_tasks_cover.png)</code></pre>
-            </div>
+            <pre
+              class="language-javascript"
+            ><code >GET https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark&imageurl=https://bulusdev.vercel.app/Asserts/images/demi_tasks_cover.png</code></pre>
           </div>
         </div>
-        <div class="parameters-card-container">
-          <div class="parameters-card">
-            <h3>Svg card with image</h3>
-            <div class="parameters-list svg-card-with-img" style="display: grid; place-items: center;">
-              <img style="max-width:100%;" src="/api/bulushamnu/repos/animeq-game?theme=warm&imageurl=https://bulusdev.vercel.app/Asserts/images/animequiz.png" alt="Demi-Tasks">
+
+        <div class="usage-step">
+          <h3>2. Receive SVG Response</h3>
+          <p>
+            The API returns an SVG/IMAGE representation of your project with
+            relevant metadata.
+          </p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="window-controls">
+                <div class="control red"></div>
+                <div class="control yellow"></div>
+                <div class="control green"></div>
+              </div>
+              <div class="title">Response Example</div>
             </div>
+            <pre><code class="language-html">&lt;svg width="400" height="200" xmlns="http://www.w3.org/2000/svg"&gt;&lt;!-- SVG content --&gt;&lt;/svg&gt;</code></pre>
           </div>
-          
         </div>
+
+        <div class="usage-step">
+          <h3>3. Embed in Your README</h3>
+          <p>Add the image to your GitHub profile or repository README.</p>
+          <div class="code-block">
+            <div class="code-header">
+              <div class="window-controls">
+                <div class="control red"></div>
+                <div class="control yellow"></div>
+                <div class="control green"></div>
+              </div>
+              <div class="title">Markdown Example</div>
+            </div>
+            <pre><code class="language-javascript" >![Project Visualization](https://svg-projects-card.onrender.com/api/bulushamnu/repos/Demi-Tasks?theme=dark&imageurl=https://bulusdev.vercel.app/Asserts/images/demi_tasks_cover.png)</code></pre>
+          </div>
+        </div>
+      </div>
+      <div class="parameters-card-container">
         <div class="parameters-card">
-          <h3>Custom Parameters</h3>
-          <div class="parameters-list">
-            <div class="parameter">
-              <span class="param-name">theme=</span>
-              <span class="param-value">"dark" | "light" | "warm" | "cool"</span>
-            </div>            
-            <div class="parameter">
-              <span class="param-name">Username=</span>
-              <span class="param-value">Your github username</span>
-            </div>
-            <div class="parameter">
-              <span class="param-name">pinned=</span>
-              <span class="param-value">"true" | "false" (When requesting multiple repo)</span>
-            </div>
-            <div class="parameter">
-              <span class="param-name">imageurl=</span>
-              <span class="param-value">add imageurl as param for project cover img.</span>
-            </div>
+          <h3>Svg card with image</h3>
+          <div
+            class="parameters-list svg-card-with-img"
+            style="display: grid; place-items: center"
+          >
+            <img
+              style="max-width: 100%"
+              src="/api/bulushamnu/repos/animeq-game?theme=warm&imageurl=https://bulusdev.vercel.app/Asserts/images/animequiz.png"
+              alt="Demi-Tasks"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="parameters-card">
+        <h3>Custom Parameters</h3>
+        <div class="parameters-list">
+          <div class="parameter">
+            <span class="param-name">theme=</span>
+            <span class="param-value">"dark" | "light" | "warm" | "cool"</span>
+          </div>
+          <div class="parameter">
+            <span class="param-name">Username=</span>
+            <span class="param-value">Your github username</span>
+          </div>
+          <div class="parameter">
+            <span class="param-name">pinned=</span>
+            <span class="param-value"
+              >"true" | "false" (When requesting multiple repo)</span
+            >
+          </div>
+          <div class="parameter">
+            <span class="param-name">imageurl=</span>
+            <span class="param-value"
+              >add imageurl as param for project cover img.</span
+            >
           </div>
         </div>
       </div>
     </div>
-  </section>
-      
-  <!-- Examples Section -->
-  <section id="examples" class="examples">
-    <div class="container">
-      <div class="section-header">
-        <div class="badge">Examples</div>
-        <h2>See SVG projects card in Action</h2>
-        <p>Explore how SVG projects card transforms repository data into beautiful visualizations.</p>
+  </div>
+</section>
+
+<!-- Examples Section -->
+<section id="examples" class="examples">
+  <div class="container">
+    <div class="section-header">
+      <div class="badge">Examples</div>
+      <h2>See SVG projects card in Action</h2>
+      <p>
+        Explore how SVG projects card transforms repository data into beautiful
+        visualizations.
+      </p>
+    </div>
+
+    <div class="examples-grid">
+      <div class="example-card">
+        <div class="example-preview">
+          <img
+            src="/api/BulusHamnu/repos/FewerCharacters?theme=dark"
+            alt="FewerCharacters"
+          />
+        </div>
+        <div class="example-code">
+          <div class="code-block small">
+            <pre><code class="language-javascript">![Dark Theme](https://svg-projects-card.onrender.com/api/BulusHamnu/repos/FewerCharacters?theme=dark)</code></pre>
+          </div>
+        </div>
       </div>
-      
-      <div class="examples-grid">
-        <div class="example-card">
-          <div class="example-preview">
-            <img src="/api/BulusHamnu/repos/FewerCharacters?theme=dark" alt="FewerCharacters">
-          </div>
-          <div class="example-code">
-            <div class="code-block small">
-              <pre><code class="language-javascript">![Dark Theme](https://svg-projects-card.onrender.com/api/BulusHamnu/repos/FewerCharacters?theme=dark)</code></pre>
-            </div>
+
+      <div class="example-card">
+        <div class="example-preview">
+          <img
+            src="/api/BulusHamnu/repos/readme-svg-projects-card?theme=light"
+            alt="readme-svg-projects-card"
+          />
+        </div>
+        <div class="example-code">
+          <div class="code-block small">
+            <pre><code class="language-javascript">![Light Theme](https://svg-projects-card.onrender.com/api/BulusHamnu/repos/readme-svg-projects-card?theme=light)</code></pre>
           </div>
         </div>
-        
-        <div class="example-card">
-          <div class="example-preview">
-            <img src="/api/BulusHamnu/repos/readme-svg-projects-card?theme=light" alt="readme-svg-projects-card">
-          </div>
-          <div class="example-code">
-            <div class="code-block small">
-              <pre><code class="language-javascript">![Light Theme](https://svg-projects-card.onrender.com/api/BulusHamnu/repos/readme-svg-projects-card?theme=light)</code></pre>
-            </div>
-          </div>
+      </div>
+
+      <div class="example-card">
+        <div class="example-preview">
+          <img
+            src="/api/BulusHamnu/repos/yodemy-music?theme=warm"
+            alt="yodemy-music"
+          />
         </div>
-        
-        <div class="example-card">
-          <div class="example-preview">
-            <img src="/api/BulusHamnu/repos/yodemy-music?theme=warm" alt="yodemy-music">
-          </div>
-          <div class="example-code">
-            <div class="code-block small">
-              <pre><code class="language-javascript">![Compact Style](https://svg-projects-card.onrender.com/api/BulusHamnu/repos/yodemy-music?theme=warm)</code></pre>
-            </div>
+        <div class="example-code">
+          <div class="code-block small">
+            <pre><code class="language-javascript">![Compact Style](https://svg-projects-card.onrender.com/api/BulusHamnu/repos/yodemy-music?theme=warm)</code></pre>
           </div>
         </div>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
+{% endblock %} {% block script %}
+<script src="{{ url_for('static', filename='js/main.js')}}"></script>
 {% endblock %}
-
-{% block script %}
-  <script src="{{ url_for('static', filename='js/main.js')}}"></script>
-{% endblock %}
-</body>
-</html>

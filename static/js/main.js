@@ -1,50 +1,49 @@
 //codes
 let count = 2;
-if(window.matchMedia("(min-width: 767px)").matches) {
+if (window.matchMedia("(min-width: 767px)").matches) {
   count = 4;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Update copyright year
-  document.getElementById('current-year').textContent = new Date().getFullYear();
+  document.getElementById("current-year").textContent =
+    new Date().getFullYear();
 
   //quering and displaying svg images images examples
-  const previewContent = document.querySelector(".preview-content")
+  const previewContent = document.querySelector(".preview-content");
   fetch("/api/bulushamnu/repos?pinned=True&theme=dark")
-    .then( response => response.json() )
-    .then( svg => { 
-      for(i=0; i<count ; i++) {
-        svgCard = document.createElement("div"); 
-        svgCard.innerHTML = svg.data[i].svg; 
-        previewContent.appendChild(svgCard); 
+    .then((response) => response.json())
+    .then((svg) => {
+      for (i = 0; i < count; i++) {
+        svgCard = document.createElement("div");
+        svgCard.innerHTML = svg.data[i].svg;
+        previewContent.appendChild(svgCard);
       }
-    })
-  
-  
+    });
+
   // Intersection Observer for scroll animations
   const observerOptions = {
     threshold: 0.1,
-    rootMargin: '0px 0px -50px 0px'
+    rootMargin: "0px 0px -50px 0px",
   };
-  
+
   const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+    entries.forEach((entry) => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
+        entry.target.classList.add("visible");
         observer.unobserve(entry.target);
       }
     });
   }, observerOptions);
-  
+
   // Observe all section elements for entrance animations
-  document.querySelectorAll('section').forEach(section => {
-    section.classList.add('animate-on-scroll');
+  document.querySelectorAll("section").forEach((section) => {
+    section.classList.add("animate-on-scroll");
     observer.observe(section);
   });
-  
-  
+
   // Add some CSS for the animation classes
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
     .animate-on-scroll {
       opacity: 0;
@@ -63,5 +62,4 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   `;
   document.head.appendChild(style);
-  
 });
