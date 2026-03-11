@@ -7,12 +7,12 @@ import json
 import requests
 from . import TOKEN, logger
 
-# variable for testing functions and return
-username = "BulusHamnu"
-user_repo_name = "Demi-Tasks"
-pinned_repo = True #this flag is set true if i wanna query for pinned repos
-selected_theme = "dark"
-imglink =  "https://bulusdev.vercel.app/Asserts/images/animequiz.png"
+# Variable for testing functions and return
+# username = "BulusHamnu"
+# user_repo_name = "Demi-Tasks"
+# pinned_repo = True # this flag is set true if you wanna query for pinned repos.
+# selected_theme = "dark"
+# imglink =  "https://bulusdev.vercel.app/Asserts/images/animequiz.png"
 
 # theme color for svg
 themes_colors = {

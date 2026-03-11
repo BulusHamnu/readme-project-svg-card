@@ -1,20 +1,20 @@
 from marshmallow import Schema, fields, validate, ValidationError
 from .functions import themes_colors
 
-#mershmellow
+# mershmellow
 class ReposValidator(Schema) :
-    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid color" )
+    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid theme." )
     pinned = fields.Str(required = True)
 
 
 class RepoValidator(Schema) :
     imageurl = fields.Url(required = False)
-    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid theme" )
+    theme = fields.Str(required = True ,validate= validate.OneOf( choices= list(themes_colors.keys())), error= "Invalid theme." )
 
 # check and validate indivitual repo for ReposJsonValidator
 class RepoShema(Schema) :
     name = fields.Str(required=True)
-    theme = fields.Str(required=True, validate = validate.OneOf( choices= list(themes_colors.keys())), error="Invalid color")
+    theme = fields.Str(required=True, validate = validate.OneOf( choices= list(themes_colors.keys())), error="Invalid theme.")
     imageurl = fields.Url(required=False )
 
 

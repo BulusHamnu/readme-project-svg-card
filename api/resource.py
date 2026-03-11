@@ -10,16 +10,17 @@ repos_validator = ReposValidator()
 repo_validator = RepoValidator()
 repos_json_validator = ReposJsonValidator()
 
+def validate_username(username):
+    if len(username) <= 3 :
+        raise AppError(400, "Please provide a valid username.")
+
 class Repos(Resource) :
     def get(self,username) :
-        # check for username length
-        if len(username) <= 3 :
-            raise AppError(400, "Please provide a valid username.")
-        logger.info("Getting all repos for: %s", username)
-
+        validate_username(username)
         try :
-            args = repos_validator.load(request.args)
+            logger.info("Getting all repos for: %s", username)
 
+            args = repos_validator.load(request.args)
             pinned_repo = eval(args.get("pinned").capitalize())
             theme = args.get("theme") 
 
@@ -35,39 +36,34 @@ class Repos(Resource) :
                 logger.error("An error occured while getting repos for: %s - %s", username, svg_results.get("error"))
                 raise AppError(500, "An unexpected error occured.")
 
-            return { "status": True, "message": "Repos retrive successful.", 'data' : svg_results.get("data") } , 200
+            return { "status": True, "message": "Repos retrived successfully.", 'data' : svg_results.get("data") } , 200
 
         except ValidationError as error:
             raise AppError(400, error.messages )
 
     def post(self,username) :
-        if len(username) <= 3 :
-            raise AppError(400, "please provide a valid username.")
-        logger.info("Getting all repos for: %s", username)
-
+        validate_username(username)
         try :
+            logger.info("Getting all repos for: %s", username)
             json_data = repos_json_validator.load(request.json)
             repos = json_data.get("repos")
-
             svg_list_result = asyncio.run(get_selected_repos(username,repos))
 
             if not svg_list_result.get("status") :
                 logger.error("An error occured while getting repos for: %s - %s", username, svg_list_result.get("error") or "Repos not found." ) 
 
-                raise AppError(404, f"No Repos with this names are found { str([repo.get('name') for repo in repos]) }")
+                raise AppError(404, f"No Repos with these names were found: { str([repo.get('name') for repo in repos]) }")
             
-            return { "status": True, "data": svg_list_result.get("data") } , 200
+            return { "status": True, "message": "Repos retrived successfully.", "data": svg_list_result.get("data") } , 200
         except ValidationError as error :
             return { "status" : False, "message" : error.messages }, 400
 
 
-class Singlerepo(Resource) :
+class SingleRepo(Resource) :
     def get(self,username,name) :
-        if len(username) <= 3 :
-            raise AppError(400, "please provide a valid username." )
-        logger.info("Getting  %s repo for: %s",name, username)
-
+        validate_username(username)
         try :
+            logger.info("Getting  %s repo for: %s",username, name)
             args = repo_validator.load(request.args)
 
             theme = args.get("theme")
@@ -75,7 +71,7 @@ class Singlerepo(Resource) :
             svg_result = asyncio.run(get_repo(username, name, theme, imageurl))
             # check for error
             if not svg_result.get("status") :
-                logger.error("An error occured while getting repo for: %s - %s", username, "Repos not found.") 
+                logger.error("An error occured while getting repo for: %s - %s", username, "Repo not found.") 
                 raise AppError(404, "Repo Not Found")
 
             return Response(svg_result.get("data"), content_type="image/svg+xml", status = 200 )

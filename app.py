@@ -1,7 +1,7 @@
 #flask app 
 from flask import Flask, render_template, jsonify, url_for, request
 from flask_restful import Api, abort, reqparse
-from api.resource import Singlerepo, Repos
+from api.resource import SingleRepo, Repos
 from flask_cors import CORS
 from api import logger, FLASK_DEBUG
 from werkzeug.exceptions import HTTPException
@@ -19,15 +19,13 @@ def home() :
     return "<h1>Hello world</h1>", 200
 
 api.add_resource(Repos, "/api/<username>/repos")
-api.add_resource(Singlerepo, "/api/<username>/repos/<name>" ) 
+api.add_resource(SingleRepo, "/api/<username>/repos/<name>" ) 
 
 
 # error handlers
 @app.errorhandler(404)
 def error_404(error):
-    logger.error("User tried to access undefined route: %s", request.path)
-    return jsonify({ "status" : False,
-    "message": f"404 Not Found: {request.path} cannot be accessed." }), 404
+    return jsonify({ "status" : False, "message": "Resource not found." }), 404
 
 @app.errorhandler(Exception)
 def global_error(error):
