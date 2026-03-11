@@ -18,7 +18,7 @@ class Repos(Resource) :
     def get(self,username) :
         validate_username(username)
         try :
-            logger.info("Getting all repos for: %s", username)
+            logger.info("Getting all repositories for: %s", username)
 
             args = repos_validator.load(request.args)
             pinned_repo = eval(args.get("pinned").capitalize())
@@ -36,7 +36,7 @@ class Repos(Resource) :
                 logger.error("An error occured while getting repos for: %s - %s", username, svg_results.get("error"))
                 raise AppError(500, "An unexpected error occured.")
 
-            return { "status": True, "message": "Repos retrived successfully.", 'data' : svg_results.get("data") } , 200
+            return { "status": True, "message": "Repositories retrived successfully.", 'data' : svg_results.get("data") } , 200
 
         except ValidationError as error:
             raise AppError(400, error.messages )
@@ -54,7 +54,7 @@ class Repos(Resource) :
 
                 raise AppError(404, f"No Repos with these names were found: { str([repo.get('name') for repo in repos]) }")
             
-            return { "status": True, "message": "Repos retrived successfully.", "data": svg_list_result.get("data") } , 200
+            return { "status": True, "message": "Repositories retrived successfully.", "data": svg_list_result.get("data") } , 200
         except ValidationError as error :
             return { "status" : False, "message" : error.messages }, 400
 

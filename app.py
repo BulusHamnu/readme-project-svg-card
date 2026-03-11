@@ -5,6 +5,7 @@ from api.resource import SingleRepo, Repos
 from flask_cors import CORS
 from api import logger, FLASK_DEBUG
 from werkzeug.exceptions import HTTPException
+from api import logger , AppError
 
 
 app = Flask(__name__)
@@ -29,6 +30,7 @@ def error_404(error):
 
 @app.errorhandler(Exception)
 def global_error(error):
+    logger.error("An error occured: ", error.description)
     if isinstance(error, HTTPException) :
         return jsonify({
             "status" : False,
